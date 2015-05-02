@@ -1,0 +1,32 @@
+{
+  "name": "rule-based-map-generator",
+  "version": "0.0.0",
+  "description": "Rule based map generator",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tiago7alves/rule-based-map-generator.git"
+  },
+  "keywords": [
+    "rule",
+    "based",
+    "map",
+    "generator",
+    "mmo",
+    "massive",
+    "multiplayer",
+    "online",
+    "game",
+    "procedural",
+    "generation"
+  ],
+  "author": "Tiago Alves <letiagoalves@gmail.com> (http://letiagoalves.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tiago7alves/rule-based-map-generator/issues"
+  },
+  "homepage": "https://github.com/tiago7alves/rule-based-map-generator"
+}
