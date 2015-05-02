@@ -4,6 +4,7 @@
     },
     "rules": {
         "strict": [2, "global"],
-        "quotes": [2, "single"]
+        "quotes": [2, "single"],
+        "indent": [2, 4]
     }
 }
