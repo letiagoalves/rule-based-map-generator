@@ -1,0 +1,8 @@
+{
+    "connector": {
+        "type": {
+            "blacklist": "blacklist",
+            "whitelist": "whitelist"
+        }
+    }
+}
