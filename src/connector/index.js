@@ -2,7 +2,6 @@
 
 var validator = require('./../validator');
 var schema = require('./schema');
-var CONSTANTS = require('./../constants.json');
 
 function Connector(id, type, blockIds, blockClasses) {
     id = validator.assert(id, schema.id, 'Connector id');

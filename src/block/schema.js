@@ -1,7 +1,6 @@
 'use strict';
 
 var Joi = require('joi');
-var CONSTANTS = require('./../constants.json');
 
 var idSchema = Joi.string().required();
 var classesSchema = Joi.array().items(Joi.string()).default([]);

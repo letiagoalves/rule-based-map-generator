@@ -2,12 +2,17 @@
 
 var Block = require('./block');
 var Connector = require('./connector');
+var World = require('./world');
 var forOwn = require('mout/object/forOwn');
-var util = require('util');
+var objectMap = require('mout/object/map');
 
 function getStrategy(numberOfSides) {
-    // TODO:
-    return require('./strategies/four-sides');
+    switch (numberOfSides) {
+    case 4:
+        return require('./strategies/four-sides');
+    default:
+        throw new Error('Unknown strategy');
+    }
 }
 
 function parseBlock(sidesTemplate) {
@@ -22,12 +27,17 @@ function parseConnector(connector) {
 
 function createMapUsingProperty(arr, prop) {
     var map = {};
-    arr.forEach(function (value) {
+    arr.forEach(function set(value) {
         map[value[prop]] = value;
     });
     return map;
 }
 
+/**
+ * Parses a world configuration and returns a world instance
+ * @param  {Object} config  World configuration
+ * @return {World}  A world instance
+ */
 function parse(config) {
     // TODO: rethink strategies
     var strategy = getStrategy(config.numberOfSides);
@@ -35,17 +45,20 @@ function parse(config) {
     var blocksMap = createMapUsingProperty(blocks, 'id');
     var connectors = config.connectors.map(parseConnector);
     var connectorsMap = createMapUsingProperty(connectors, 'id');
-    var blockDefinition;
 
     // for each block set side connectors
-    for(blockDefinition of config.blocks) {
-        forOwn(blockDefinition.connectors, function (connectorId, side) {
-            blocksMap[blockDefinition.id].setSideConnector(side, connectorsMap[connectorId]);
+    config.blocks.forEach(function setConnectors(blockDefinition) {
+        var blockInstance = blocksMap[blockDefinition.id];
+        var sideConnectors = objectMap(blockDefinition.connectors, function mapToConnector (connectorId) {
+            return connectorsMap[connectorId];
         });
-    }
 
-    console.info('blocks', util.inspect(blocks, { depth: 5}));
-    //console.info('connectors', connectors);
+        forOwn(sideConnectors, function setSideConnector (connector, side) {
+            blockInstance.setSideConnector(side, connector);
+        });
+    });
+
+    return new World(strategy, blocks);
 }
 
 module.exports = {
