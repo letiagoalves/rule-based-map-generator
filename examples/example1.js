@@ -4,11 +4,8 @@ var world1Config = require('./configurations/world1.json');
 var builder = require('./../src/builder.js');
 var util = require('util');
 
-var worldInstance1 = builder.parse(world1Config);
-
-console.info('worldInstance', util.inspect(worldInstance1, {
-    depth: 5
-}));
+var worldInstance = builder.parse(world1Config);
+worldInstance.start();
 
 
 /**

@@ -37,4 +37,8 @@ Block.prototype.setSideConnector = function (side, connector) {
     this.sides[side] = connector;
 };
 
+Block.prototype.toString = function toString () {
+    return '{Block} {id}'.replace('{id}', this.id);
+};
+
 module.exports = Block;

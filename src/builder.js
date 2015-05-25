@@ -3,6 +3,7 @@
 var Block = require('./block');
 var Connector = require('./connector');
 var World = require('./world');
+var WorldConstraints = require('./world/world-constraints.js');
 var forOwn = require('mout/object/forOwn');
 var objectMap = require('mout/object/map');
 
@@ -33,18 +34,26 @@ function createMapUsingProperty(arr, prop) {
     return map;
 }
 
+function instantiateWorldConstraintsFromConfiguration (config) {
+    return new WorldConstraints(config.bounds, config.initialBlock, config.initialMapSize);
+}
+
 /**
  * Parses a world configuration and returns a world instance
  * @param  {Object} config  World configuration
  * @return {World}  A world instance
  */
 function parse(config) {
+    // TODO: validate JSON
     // TODO: rethink strategies
     var strategy = getStrategy(config.numberOfSides);
+
     var blocks = config.blocks.map(parseBlock(strategy.sides));
     var blocksMap = createMapUsingProperty(blocks, 'id');
     var connectors = config.connectors.map(parseConnector);
     var connectorsMap = createMapUsingProperty(connectors, 'id');
+
+    var worldConstraints = instantiateWorldConstraintsFromConfiguration(config);
 
     // for each block set side connectors
     config.blocks.forEach(function setConnectors(blockDefinition) {
@@ -58,7 +67,7 @@ function parse(config) {
         });
     });
 
-    return new World(strategy, blocks);
+    return new World(strategy.createInstance(), worldConstraints, blocks);
 }
 
 module.exports = {
