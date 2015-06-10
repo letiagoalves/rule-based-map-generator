@@ -17,13 +17,15 @@ World.prototype.start = function () {
     this.strategy.init(this.constraints, this.blocks);
 };
 
-World.prototype.get = function (x, y, size) {
-    this.strategy.get(x, y, size);
+World.prototype.getPartialMap = function (minX, minY, maxX, maxY) {
+    //TODO: assertions
+    return this.strategy.getPartialMap(minX, minY, maxX, maxY);
 };
 
-World.prototype.getAll = function () {};
+World.prototype.getMap = function () {
+    return this.strategy.getMap();
+};
 
 World.prototype.invalidate = function () {};
-
 
 module.exports = World;

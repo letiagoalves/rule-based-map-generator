@@ -2,11 +2,15 @@
 
 var world1Config = require('./configurations/world1.json');
 var builder = require('./../src/builder.js');
-var util = require('util');
+var myUtils = require('./../src/utils/utils.js');
 
 var worldInstance = builder.parse(world1Config);
+console.log('start world');
 worldInstance.start();
+console.log('get 0,0');
+myUtils.logTable(worldInstance.getPartialMap(-1, -1, 0, 0));
 
+//myUtils.logTable(worldInstance.getMap());
 
 /**
 // 1 - Create blocks
