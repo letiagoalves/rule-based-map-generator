@@ -6,6 +6,6 @@
         "strict": [2, "global"],
         "quotes": [2, "single"],
         "indent": [2, 4],
-        "vars-on-top": [2, 2]
+        "vars-on-top": 2
     }
 }

@@ -8,7 +8,7 @@ var worldInstance = builder.parse(world1Config);
 console.log('start world');
 worldInstance.start();
 console.log('get 0,0');
-myUtils.logTable(worldInstance.getPartialMap(-1, -1, 0, 0));
+myUtils.logTable(worldInstance.getPartialMap(-2, -2, 2, 2));
 
 //myUtils.logTable(worldInstance.getMap());
 

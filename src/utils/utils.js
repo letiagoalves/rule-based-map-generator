@@ -2,6 +2,17 @@
 
 var fs = require('fs');
 var betterConsole = require('better-console');
+var arrayDifference = require('mout/array/difference');
+var arrayIntersection = require('mout/array/intersection');
+
+function applyWhitelist(victim, whitelist) {
+    return arrayIntersection(victim, whitelist);
+}
+
+function applyBlackList(victim, blacklist) {
+    return arrayDifference(victim, blacklist);
+}
+
 
 function writeJSONfile(obj, outputFilename) {
     fs.writeFile(outputFilename, JSON.stringify(obj, null, 4), function (err) {
@@ -27,6 +38,8 @@ function logTable(table) {
 }
 
 module.exports = {
+    applyWhitelist: applyWhitelist,
+    applyBlackList: applyBlackList,
     writeJSONfile: writeJSONfile,
     logTable: logTable
 };

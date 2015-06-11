@@ -1,6 +1,11 @@
 'use strict';
 
 var Matrix = require('functional-matrix');
+var Joi = require('joi');
+
+var quadrantsHelper = require('./quadrants-helper.js');
+var validator = require('./../../validator');
+var Block = require('./../../block');
 
 function MapManager(initialSize) {
     var quarterOfSize = initialSize / 2;
@@ -14,22 +19,6 @@ function MapManager(initialSize) {
         q3: new Matrix(sizeForEachQadrant, sizeForEachQadrant),
         q4: new Matrix(sizeForEachQadrant, sizeForEachQadrant)
     };
-}
-
-function isQ1(x, y) {
-    return x >= 0 && y >= 0;
-}
-
-function isQ2(x, y) {
-    return x < 0 && y >= 0;
-}
-
-function isQ3(x, y) {
-    return x < 0 && y < 0;
-}
-
-function isQ4(x, y) {
-    return x >= 0 && y < 0;
 }
 
 MapManager.prototype.getPartialMap = function (minX, minY, maxX, maxY) {
@@ -57,19 +46,19 @@ MapManager.prototype.get = function get(x, y) {
     // TODO: assert integers
     var map = this.map;
 
-    if (isQ1(x, y)) {
+    if (quadrantsHelper.isQ1(x, y)) {
         return map.q1.get(x, y);
     }
 
-    if (isQ2(x, y)) {
+    if (quadrantsHelper.isQ2(x, y)) {
         return map.q2.get(Math.abs(x) - 1, y);
     }
 
-    if (isQ3(x, y)) {
+    if (quadrantsHelper.isQ3(x, y)) {
         return map.q3.get(Math.abs(x) - 1, Math.abs(y) - 1);
     }
 
-    if (isQ4(x, y)) {
+    if (quadrantsHelper.isQ4(x, y)) {
         return map.q4.get(x, Math.abs(y) - 1);
     }
 
@@ -77,22 +66,26 @@ MapManager.prototype.get = function get(x, y) {
 };
 
 MapManager.prototype.set = function get(x, y, value) {
-    // TODO: assert integers and value
-    var map = this.map;
+    var map;
 
-    if (isQ1(x, y)) {
+    // TODO: assert integers and value
+    validator.assert(value, Joi.object().type(Block).required().allow(null), 'value must be a Block');
+
+    map = this.map;
+
+    if (quadrantsHelper.isQ1(x, y)) {
         return map.q1.set(x, y, value);
     }
 
-    if (isQ2(x, y)) {
+    if (quadrantsHelper.isQ2(x, y)) {
         return map.q2.set(Math.abs(x) - 1, y, value);
     }
 
-    if (isQ3(x, y)) {
+    if (quadrantsHelper.isQ3(x, y)) {
         return map.q3.set(Math.abs(x) - 1, Math.abs(y) - 1, value);
     }
 
-    if (isQ4(x, y)) {
+    if (quadrantsHelper.isQ4(x, y)) {
         return map.q4.set(x, Math.abs(y) - 1, value);
     }
 
