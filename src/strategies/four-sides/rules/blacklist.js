@@ -10,12 +10,12 @@ function applyBlackAndWhiteLists(candidates, neighbourConnectors) {
 
     objectForOwn(neighbourConnectors, function (connector) {
         if (connector) {
-            switch (connector.type) {
+            switch (connector.getType()) {
                 case CONSTANTS.connector.type.blacklist:
-                    newCandidates = myUtils.applyBlackList(newCandidates, connector.blockIds);
+                    newCandidates = myUtils.applyBlackList(newCandidates, connector.getBlockIds());
                     break;
                 case CONSTANTS.connector.type.whitelist:
-                    newCandidates = myUtils.applyWhitelist(newCandidates, connector.blockIds);
+                    newCandidates = myUtils.applyWhitelist(newCandidates, connector.getBlockIds());
                     break;
                 default:
                     throw new Error('connector.type unknown');

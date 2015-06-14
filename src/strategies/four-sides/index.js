@@ -5,6 +5,7 @@ var MapManager = require('./map-manager.js');
 var mapGenerator = require('./map-generator.js');
 var quadrantsHelper = require('./quadrants-helper.js');
 var Block = require('./../../block');
+var utils = require('./../../utils/utils.js');
 
 var name = 'Four sides block strategy';
 var sides = ['UP', 'RIGHT', 'BOTTOM', 'LEFT'];
@@ -22,9 +23,8 @@ function createInstance() {
 
         instanceProps.mapManager = new MapManager(worldConstraints.initialMapSize);
         instanceProps.worldConstraints = worldConstraints;
-        instanceProps.blocksMap = {};
-        blocks.forEach(function mapBlock(block) {
-            instanceProps.blocksMap[block.id] = block;
+        instanceProps.blocksMap = utils.createMapUsingCallback(blocks, function resolveId(b) {
+            return b.getId();
         });
 
         if (worldConstraints.initialBlock) {
@@ -57,7 +57,7 @@ function createInstance() {
     function buildNeighbours(x, y) {
         function resolve(posX, posY) {
             var block = instanceProps.mapManager.get(posX, posY);
-            return block instanceof Block ? block.id : null;
+            return block instanceof Block ? block.getId() : null;
         }
 
         return {

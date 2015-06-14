@@ -5,6 +5,22 @@ var betterConsole = require('better-console');
 var arrayDifference = require('mout/array/difference');
 var arrayIntersection = require('mout/array/intersection');
 
+function createMapUsingCallback(arr, callback) {
+    var map = {};
+    arr.forEach(function set(value) {
+        map[callback(value)] = value;
+    });
+    return map;
+}
+
+function createMapUsingProperty(arr, prop) {
+    var map = {};
+    arr.forEach(function set(value) {
+        map[value[prop]] = value;
+    });
+    return map;
+}
+
 function applyWhitelist(victim, whitelist) {
     return arrayIntersection(victim, whitelist);
 }
@@ -38,6 +54,8 @@ function logTable(table) {
 }
 
 module.exports = {
+    createMapUsingProperty: createMapUsingProperty,
+    createMapUsingCallback: createMapUsingCallback,
     applyWhitelist: applyWhitelist,
     applyBlackList: applyBlackList,
     writeJSONfile: writeJSONfile,

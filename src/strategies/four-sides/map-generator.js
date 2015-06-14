@@ -20,15 +20,15 @@ function selectBlock (neighbours, blocksMap) {
 
     var neighbourConnectors = objectMap(neighbours, function mapNeighbour (neighbourId, side) {
         var connectorLookUpSide;
-        var neighbourBlock;
+        var neighbourBlockSides;
 
         if(!isString(neighbourId)) {
             return null;
         }
 
         connectorLookUpSide = sidesRelation[side];
-        neighbourBlock = blocksMap[neighbourId];
-        return neighbourBlock.sides[connectorLookUpSide];
+        neighbourBlockSides = blocksMap[neighbourId].getSides();
+        return neighbourBlockSides[connectorLookUpSide];
     });
 
     //console.log('candidates before', candidates);

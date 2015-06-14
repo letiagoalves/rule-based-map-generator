@@ -1,11 +1,13 @@
 'use strict';
 
+var forOwn = require('mout/object/forOwn');
+var objectMap = require('mout/object/map');
+
 var Block = require('./block');
 var Connector = require('./connector');
 var World = require('./world');
 var WorldConstraints = require('./world/world-constraints.js');
-var forOwn = require('mout/object/forOwn');
-var objectMap = require('mout/object/map');
+var utils = require('./utils/utils.js');
 
 function getStrategy(numberOfSides) {
     switch (numberOfSides) {
@@ -26,14 +28,6 @@ function parseConnector(connector) {
     return new Connector(connector.id, connector.type, connector.blockIds, connector.blockClasses);
 }
 
-function createMapUsingProperty(arr, prop) {
-    var map = {};
-    arr.forEach(function set(value) {
-        map[value[prop]] = value;
-    });
-    return map;
-}
-
 function instantiateWorldConstraintsFromConfiguration (config) {
     return new WorldConstraints(config.bounds, config.initialBlock, config.initialMapSize);
 }
@@ -49,9 +43,13 @@ function parse(config) {
     var strategy = getStrategy(config.numberOfSides);
 
     var blocks = config.blocks.map(parseBlock(strategy.sides));
-    var blocksMap = createMapUsingProperty(blocks, 'id');
+    var blocksMap = utils.createMapUsingCallback(blocks, function resolveId(b) {
+        return b.getId();
+    });
     var connectors = config.connectors.map(parseConnector);
-    var connectorsMap = createMapUsingProperty(connectors, 'id');
+    var connectorsMap = utils.createMapUsingCallback(connectors, function resolveId(c) {
+        return c.getId();
+    });
 
     var worldConstraints = instantiateWorldConstraintsFromConfiguration(config);
 
