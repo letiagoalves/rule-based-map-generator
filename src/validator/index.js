@@ -3,6 +3,15 @@
 var Joi = require('joi');
 var util = require('util');
 
+function assertBounds(bounds) {
+    Joi.assert(bounds, Joi.object().keys({
+        minX: Joi.number().less(Joi.ref('maxX')).required(),
+        maxX: Joi.number().required(),
+        minY: Joi.number().less(Joi.ref('maxY')).required(),
+        maxY: Joi.number().required()
+    }));
+}
+
 /**
  * Validates a value with a given schema
  * @param  {Any}    value       The value to validate
@@ -24,5 +33,6 @@ function assert(value, schema, message) {
 }
 
 module.exports = {
-    assert: assert
+    assert: assert,
+    assertBounds: assertBounds
 };
