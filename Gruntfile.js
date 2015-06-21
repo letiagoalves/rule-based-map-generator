@@ -3,13 +3,21 @@ module.exports = function (grunt) {
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+
         eslint: {
             options: {
                 configFile: 'conf/eslint.json',
             },
-            target: ['src/**/*.js', 'examples/**/*.js']
+            target: ['src/**/*.js', 'examples/**/*.js', 'test/**/*.js']
+        },
+
+        mocha_istanbul: {
+            coverage: {
+                src: 'test/unit/**/*.js',
+                root: 'src/'
+            }
         }
     });
 
-    grunt.registerTask('default', ['eslint']);
+    grunt.registerTask('test', ['eslint', 'mocha_istanbul:coverage']);
 };
