@@ -1,7 +1,6 @@
 'use strict';
 
-var expect = require('chai').expect;
-var sinon = require('sinon');
+//var expect = require('chai').expect;
 
 describe('validator/index.js', function () {
     var victim;
@@ -20,7 +19,8 @@ describe('validator/index.js', function () {
 
     it('should', function () {
         console.log('victim', victim);
-        expect(true).to.be.true;
-    })
+        // TODO: create another set of rules for eslint:tests, merge with src rules
+        //expect(true).to.be.true;
+    });
 
 });

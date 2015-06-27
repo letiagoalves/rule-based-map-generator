@@ -2,6 +2,7 @@
 
 var chalk = require('chalk');
 var MapManager = require('./map-manager.js');
+var MapStatus = require('./map-status.js');
 var mapGenerator = require('./map-generator.js');
 var quadrantsHelper = require('./quadrants-helper.js');
 var Block = require('./../../block');
@@ -12,8 +13,11 @@ var sides = ['UP', 'RIGHT', 'BOTTOM', 'LEFT'];
 
 function createInstance() {
 
+    // TODO: destruct this
+    // TODO: pass blocksMap to mapStatus
     var instanceProps = {
         mapManager: null,
+        mapStatus: null,
         blocksMap: null,
         worldConstraints: null
     };
@@ -22,6 +26,7 @@ function createInstance() {
         var initialBlock;
 
         instanceProps.mapManager = new MapManager(worldConstraints.initialMapSize);
+        instanceProps.mapStatus = new MapStatus();
         instanceProps.worldConstraints = worldConstraints;
         instanceProps.blocksMap = utils.createMapUsingCallback(blocks, function resolveId(b) {
             return b.getId();
@@ -33,6 +38,7 @@ function createInstance() {
                 throw new Error('Initial block is invalid');
             }
             instanceProps.mapManager.set(0, 0, initialBlock);
+            instanceProps.mapStatus.addBlock(initialBlock.getId());
         }
     }
 
@@ -70,10 +76,14 @@ function createInstance() {
 
     function generateAtPosition(x, y) {
         var neighbours = buildNeighbours(x, y);
-        var blockId = mapGenerator.selectBlock(neighbours, instanceProps.blocksMap);
+        var blockId = mapGenerator.selectBlock(neighbours, instanceProps.blocksMap, instanceProps.mapStatus);
         var block = blockId && instanceProps.blocksMap[blockId];
         console.log(chalk.red('generateAtPosition (%s, %s) - %s'), x, y, blockId);
         instanceProps.mapManager.set(x, y, block);
+
+        if (blockId !== null) {
+            instanceProps.mapStatus.addBlock(blockId);
+        }
     }
 
     function generateRow(fromX, toX, posY) {
@@ -93,6 +103,7 @@ function createInstance() {
         for (i = 0; i <= j; i++) {
             posX = fromX + i * increment;
             if (!isPositionFilled(posX, posY)) {
+                // TODO: check if it is not repeating positions unnecessary
                 generateAtPosition(posX, posY);
             }
         }
@@ -121,7 +132,7 @@ function createInstance() {
         }
 
         // plus 1 because first block was filled by horizontal loop
-        if (bounds.minY + 1 < bounds.maxY) {
+        if (bounds.minY + 1 <= bounds.maxY) {
             generateColumn(bounds.minY + 1, bounds.maxY, bounds.minX);
         }
 
@@ -147,7 +158,7 @@ function createInstance() {
         }
 
         // plus 1 because first block was filled by horizontal loop
-        if (bounds.minY + 1 < bounds.maxY) {
+        if (bounds.minY + 1 <= bounds.maxY) {
             generateColumn(bounds.minY + 1, bounds.maxY, bounds.maxX);
         }
 
@@ -173,7 +184,7 @@ function createInstance() {
         }
 
         // minus 1 because first block was filled by horizontal loop
-        if (bounds.maxY - 1 > bounds.minY) {
+        if (bounds.maxY - 1 >= bounds.minY) {
             generateColumn(bounds.maxY - 1, bounds.minY, bounds.maxX);
         }
 

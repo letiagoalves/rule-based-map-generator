@@ -15,10 +15,11 @@ function createSidesFromTemplate(template) {
 function Block(id, sidesTemplate, classes, constraints) {
     var sides;
 
+    // schema assertions
     id = validator.assert(id, schema.id, 'Block id');
     sidesTemplate = validator.assert(sidesTemplate, schema.sidesTemplate, 'Sides template');
     classes = validator.assert(classes, schema.classes, 'Block classes');
-    //TODO: assert constraints
+    constraints = validator.assert(constraints, schema.constraints, 'Block constraints');
 
     sides = createSidesFromTemplate(sidesTemplate);
 
@@ -34,8 +35,12 @@ function Block(id, sidesTemplate, classes, constraints) {
         return sides;
     }
 
-    function getMaxOccupation () {
+    function getMaxOccupation() {
         return constraints.maxOccupation;
+    }
+
+    function getMaxOccupationPercentage() {
+        return constraints.maxOccupationPercentage;
     }
 
     /**
@@ -44,7 +49,7 @@ function Block(id, sidesTemplate, classes, constraints) {
      * @param {Connector}   connector Connector
      */
     function setSideConnector(side, connector) {
-        if(!sides.hasOwnProperty(side)) {
+        if (!sides.hasOwnProperty(side)) {
             throw new Error('Invalid side');
         }
         sides[side] = connector;
@@ -59,6 +64,7 @@ function Block(id, sidesTemplate, classes, constraints) {
     this.getSides = getSides;
     this.getNumberOfSides = getNumberOfSides;
     this.getMaxOccupation = getMaxOccupation;
+    this.getMaxOccupationPercentage = getMaxOccupationPercentage;
     this.setSideConnector = setSideConnector;
     this.toString = toString;
 }
