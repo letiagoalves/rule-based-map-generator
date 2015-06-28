@@ -3,11 +3,19 @@
 var Joi = require('joi');
 var util = require('util');
 
+/**
+ * Asserts that a bounds object is valid, meaning maxX and maxY must be greater than minX and minY respectively
+ * @param  {Object} bounds
+ * @param  {Number} bounds.minX
+ * @param  {Number} bounds.minY
+ * @param  {Number} bounds.maxX
+ * @param  {Number} bounds.maxY
+ */
 function assertBounds(bounds) {
-    Joi.assert(bounds, Joi.object().keys({
-        minX: Joi.number().less(Joi.ref('maxX')).required(),
+    Joi.assert(bounds, Joi.object().required().keys({
+        minX: Joi.number().required().less(Joi.ref('maxX')),
         maxX: Joi.number().required(),
-        minY: Joi.number().less(Joi.ref('maxY')).required(),
+        minY: Joi.number().required().less(Joi.ref('maxY')),
         maxY: Joi.number().required()
     }));
 }
