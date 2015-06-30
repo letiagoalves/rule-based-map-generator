@@ -39,21 +39,31 @@ function writeJSONfile(outputFilename, obj) {
 }
 
 function logTable(table) {
+    var blockTemplate = '{block} ({x}, {y})';
     table = table.map(function (arr) {
         return arr.map(function (value) {
-            if (value === undefined) {
-                return 'undefined';
+            var b;
+
+            switch (value.block) {
+                case undefined:
+                    b = 'undefined';
+                    break;
+                case null:
+                    b = 'null';
+                    break;
+                default:
+                    b = value.block;
             }
-            if (value === null) {
-                return 'null';
-            }
-            return value;
+            return blockTemplate.replace('{block}', b)
+                .replace('{x}', value.x)
+                .replace('{y}', value.y);
         });
     });
     betterConsole.table(table);
 }
 
 function saveMap (mapData) {
+    /*
     var outputMap = mapData.map(function (arr) {
         return arr.map(function (value) {
             if (value && value.getId()) {
@@ -61,8 +71,8 @@ function saveMap (mapData) {
             }
             return value;
         });
-    });
-    writeJSONfile('map.json', outputMap);
+    });*/
+    writeJSONfile('map.json', mapData);
 }
 
 module.exports = {

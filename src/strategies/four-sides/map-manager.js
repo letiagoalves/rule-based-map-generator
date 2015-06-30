@@ -63,6 +63,15 @@ function MapManager(initialSize) {
         throw new Error('cannot set');
     }
 
+    function getMapBounds() {
+        return {
+            minX: -Math.max(map.q2.cols(), map.q3.cols()),
+            maxX: Math.max(map.q1.cols(), map.q4.cols()) - 1,
+            minY: -Math.max(map.q3.rows(), map.q4.rows()),
+            maxY: Math.max(map.q1.rows(), map.q2.rows()) - 1
+        };
+    }
+
     // TODO: documentation
     function getPartialMap(minX, minY, maxX, maxY) {
         var xSize = Math.abs(maxX - minX) + 1;
@@ -76,16 +85,12 @@ function MapManager(initialSize) {
 
     // TODO: documentation
     function getMap() {
-        var minX = -Math.max(map.q2.cols(), map.q3.cols());
-        var maxX = Math.max(map.q1.cols(), map.q4.cols()) - 1;
-
-        var minY = -Math.max(map.q3.rows(), map.q4.rows());
-        var maxY = Math.max(map.q1.rows(), map.q2.rows()) - 1;
-
-        return getPartialMap(minX, minY, maxX, maxY);
+        var bounds = getMapBounds();
+        return getPartialMap(bounds.minX, bounds.minY, bounds.maxX, bounds.maxY);
     }
 
     // public
+    this.getMapBounds = getMapBounds;
     this.getPartialMap = getPartialMap;
     this.getMap = getMap;
     this.get = get;

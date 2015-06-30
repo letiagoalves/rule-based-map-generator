@@ -11,14 +11,18 @@ var map;
 console.log(chalk.bgBlue('Running Example 1'));
 
 worldInstance = builder.parse(world1Config);
-console.log('start world');
 worldInstance.start();
-console.log('get 0,0');
-map = worldInstance.getPartialMap(-2, -2, 2, 2);
-myUtils.logTable(map);
-map = worldInstance.getPartialMap(-3, -3, 1, 1);
-map = worldInstance.getMap();
-myUtils.logTable(map);
+
+function getAndLog(minX, minY, maxX, maxY) {
+    var partialMap = worldInstance.getPartialMap(minX, minY, maxX, maxY);
+    myUtils.logTable(partialMap);
+}
+
+getAndLog(-2, -2, 0, 0);
+getAndLog(0, 0, 2, 2);
+
 
 // TMP
+map = worldInstance.getMap();
+myUtils.logTable(map);
 myUtils.saveMap(map);

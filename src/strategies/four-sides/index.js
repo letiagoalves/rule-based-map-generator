@@ -11,6 +11,22 @@ var utils = require('./../../utils/utils.js');
 var name = 'Four sides block strategy';
 var sides = ['UP', 'RIGHT', 'BOTTOM', 'LEFT'];
 
+function adaptMapMatrix(matrix, minX, maxY) {
+    var y = maxY + 1;
+    return matrix.map(function mapRow(row) {
+        var x = minX - 1;
+        y--;
+        return row.map(function mapColumn(value) {
+            x++;
+            return {
+                x: x,
+                y: y,
+                block: value && value.getId()
+            };
+        });
+    });
+}
+
 function createInstance() {
 
     // TODO: destruct this
@@ -266,11 +282,13 @@ function createInstance() {
             partialMap = instanceProps.mapManager.getPartialMap(minX, minY, maxX, maxY);
         }
 
-        return partialMap;
+        return adaptMapMatrix(partialMap, minX, maxY);
     }
 
     function getMap() {
-        return instanceProps.mapManager.getMap();
+        var map = instanceProps.mapManager.getMap();
+        var mapBounds = instanceProps.mapManager.getMapBounds();
+        return adaptMapMatrix(map, mapBounds.minX, mapBounds.maxY);
     }
 
     // public

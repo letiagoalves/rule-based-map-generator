@@ -19,6 +19,10 @@ function parse(config) {
     var connectorsMap;
 
     // TODO: validate JSON
+    if (typeof config !== 'object') {
+        throw new Error('temp error: invalid config');
+    }
+
     // TODO: rethink strategies
 
     // create block
