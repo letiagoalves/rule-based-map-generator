@@ -272,9 +272,18 @@ function createInstance() {
     }
 
     function getPartialMap(minX, minY, maxX, maxY) {
+        var partialMap;
+        var isAllFilled;
+        // TODO: throw nice error when getting invalid part of map (ex: outside map limits)
+
         // TODO: check if inside map boounds
-        var partialMap = instanceProps.mapManager.getPartialMap(minX, minY, maxX, maxY);
-        var isAllFilled = isAllMatrixFilledWithBlocks(partialMap);
+        console.log('isInsideMapBounds', arguments, instanceProps.mapManager.isInsideMapBounds(minX, minY, maxX, maxY));
+        if (!instanceProps.mapManager.isInsideMapBounds(minX, minY, maxX, maxY)) {
+            instanceProps.mapManager.expandMap(minX, minY, maxX, maxY);
+        }
+
+        partialMap = instanceProps.mapManager.getPartialMap(minX, minY, maxX, maxY);
+        isAllFilled = isAllMatrixFilledWithBlocks(partialMap);
 
         console.log('isAllFilled', isAllFilled);
         if (!isAllFilled) {

@@ -66,11 +66,11 @@ function selectBlock(neighbours, blocksMap, mapStatus) {
     console.log('candidates before', candidates);
     // TODO: create a method to transverse all rules and stop when no candidates are left
     candidates = useBlackAndWhiteListsRule(candidates, neighbours, blocksMap);
-    console.log('candidates after blacklist', candidates);
+    //console.log('candidates after blacklist', candidates);
     candidates = useMaxOccupationRule(candidates, blocksMap, mapStatus);
-    console.log('candidates after max occupation', candidates);
+    //console.log('candidates after max occupation', candidates);
     candidates = useMaxOccupationPercentageRule(candidates, blocksMap, mapStatus);
-    console.log('candidates after max occupation percentage', candidates);
+    //console.log('candidates after max occupation percentage', candidates);
 
     // TODO: TEMP - improve final selection
     chosenOne = candidates.length > 0 ? candidates[0] : null;

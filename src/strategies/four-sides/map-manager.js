@@ -89,10 +89,45 @@ function MapManager(initialSize) {
         return getPartialMap(bounds.minX, bounds.minY, bounds.maxX, bounds.maxY);
     }
 
+    function isInsideMapBounds(minX, minY, maxX, maxY) {
+        var mapBounds = getMapBounds();
+        return minX >= mapBounds.minX && minY >= mapBounds.minY &&
+               maxX <= mapBounds.maxX && maxY <= mapBounds.maxY;
+    }
+
+    function expandMapQ1(maxX, maxY) {
+        var i;
+        var mapBounds = getMapBounds();
+        var missingColumns = maxX - mapBounds.maxX;
+        var missingRows = maxY - mapBounds.maxY;
+
+        for (i = 0; i < missingRows; i++) {
+            console.log('missingRows', missingRows, map.q1.cols());
+            map.q1.pushRow(Array(map.q1.cols()));
+        }
+
+        for (i = 0; i < missingColumns; i++) {
+            console.log('missingColumns', missingColumns, map.q1.rows());
+            map.q1.pushCol(Array(map.q1.rows()));
+        }
+
+        // TODO: log again table to compare result. Run example 3 and fix.
+    }
+
+    function expandMap(minX, minY, maxX, maxY) {
+        // TODO: expand only to map limits defined in map constraints
+        expandMapQ1(maxX, maxY);
+        //expandMapQ2(minX, maxY);
+        //expandMapQ3(minX, minY);
+        //expandMapQ4(maxX, minY);
+    }
+
     // public
     this.getMapBounds = getMapBounds;
     this.getPartialMap = getPartialMap;
     this.getMap = getMap;
+    this.isInsideMapBounds = isInsideMapBounds;
+    this.expandMap = expandMap;
     this.get = get;
     this.set = set;
 }
