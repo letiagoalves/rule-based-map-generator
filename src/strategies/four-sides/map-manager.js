@@ -20,44 +20,50 @@ function MapManager(initialSize) {
     };
 
     function get(x, y) {
-        // TODO: assert integers
+        var row = y;
+        var col = x;
+
+        // TODO: assert integers and inside bounds
         if (quadrantsHelper.isQ1(x, y)) {
-            return map.q1.get(x, y);
+            return map.q1.get(row, col);
         }
 
         if (quadrantsHelper.isQ2(x, y)) {
-            return map.q2.get(Math.abs(x) - 1, y);
+            return map.q2.get(row, Math.abs(col) - 1);
         }
 
         if (quadrantsHelper.isQ3(x, y)) {
-            return map.q3.get(Math.abs(x) - 1, Math.abs(y) - 1);
+            return map.q3.get(Math.abs(row) - 1, Math.abs(col) - 1);
         }
 
         if (quadrantsHelper.isQ4(x, y)) {
-            return map.q4.get(x, Math.abs(y) - 1);
+            return map.q4.get(Math.abs(row) - 1, col);
         }
 
         throw new Error('cannot get');
     }
 
     function set(x, y, value) {
+        var row = y;
+        var col = x;
+
         // TODO: assert integers and value
         validator.assert(value, Joi.object().type(Block).required().allow(null), 'value must be a Block');
 
         if (quadrantsHelper.isQ1(x, y)) {
-            return map.q1.set(x, y, value);
+            return map.q1.set(row, col, value);
         }
 
         if (quadrantsHelper.isQ2(x, y)) {
-            return map.q2.set(Math.abs(x) - 1, y, value);
+            return map.q2.set(row, Math.abs(col) - 1, value);
         }
 
         if (quadrantsHelper.isQ3(x, y)) {
-            return map.q3.set(Math.abs(x) - 1, Math.abs(y) - 1, value);
+            return map.q3.set(Math.abs(row) - 1, Math.abs(col) - 1, value);
         }
 
         if (quadrantsHelper.isQ4(x, y)) {
-            return map.q4.set(x, Math.abs(y) - 1, value);
+            return map.q4.set(Math.abs(row) - 1, col, value);
         }
 
         throw new Error('cannot set');
@@ -76,6 +82,7 @@ function MapManager(initialSize) {
     function getPartialMap(minX, minY, maxX, maxY) {
         var xSize = Math.abs(maxX - minX) + 1;
         var ySize = Math.abs(maxY - minY) + 1;
+
         var subMapMatrix = new Matrix(xSize, ySize, function fillFunction (row, col) {
             return get(row + minY, col + minX);
         });
