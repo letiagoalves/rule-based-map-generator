@@ -86,7 +86,7 @@ function createInstance() {
             UP: resolve(x, y + 1),
             RIGHT: resolve(x + 1, y),
             BOTTOM: resolve(x, y - 1),
-            LEFT: resolve(x - 1, y - 1)
+            LEFT: resolve(x - 1, y)
         };
     }
 
