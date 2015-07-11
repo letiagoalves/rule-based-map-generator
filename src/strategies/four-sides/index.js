@@ -222,7 +222,7 @@ function createInstance() {
     // TODO: create bounds assertion
     function generateInQ4(bounds) {
         console.log(chalk.green('generateInQ4'), bounds);
-        if (bounds.minX < bounds.maxX) {
+        if (bounds.minX <= bounds.maxX) {
             generateRow(bounds.minX, bounds.maxX, bounds.maxY);
         }
 

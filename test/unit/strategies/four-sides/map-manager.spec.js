@@ -177,7 +177,7 @@ describe('map-manager.js', function () {
 
         });
 
-        describe.only('q3', function () {
+        describe('q3', function () {
             var victim;
 
             beforeEach(function () {
@@ -217,6 +217,50 @@ describe('map-manager.js', function () {
                 expect(mapBounds.minX).to.be.equal(-7);
                 expect(mapBounds.minY).to.be.equal(-5);
                 expect(mapBounds.maxX).to.be.equal(1);
+                expect(mapBounds.maxY).to.be.equal(1);
+            });
+        });
+
+        describe('q4', function () {
+            var victim;
+
+            beforeEach(function () {
+                victim = new MapManager(4);
+            });
+
+            it('should expand downwards', function () {
+                var mapBounds;
+
+                victim.expandMap(-2, -3, 1, 1);
+                mapBounds = victim.getWrappedBounds(); // TODO: shouldn't test against wrapped bounds but quadrant limits.
+
+                expect(mapBounds.minX).to.be.equal(-2);
+                expect(mapBounds.minY).to.be.equal(-3);
+                expect(mapBounds.maxX).to.be.equal(1);
+                expect(mapBounds.maxY).to.be.equal(1);
+            });
+
+            it('should expand to the right side', function () {
+                var mapBounds;
+
+                victim.expandMap(-2, -2, 2, 1);
+                mapBounds = victim.getWrappedBounds();
+
+                expect(mapBounds.minX).to.be.equal(-2);
+                expect(mapBounds.minY).to.be.equal(-2);
+                expect(mapBounds.maxX).to.be.equal(2);
+                expect(mapBounds.maxY).to.be.equal(1);
+            });
+
+            it('should expand both right and downwards', function () {
+                var mapBounds;
+
+                victim.expandMap(-2, -6, 4, 1);
+                mapBounds = victim.getWrappedBounds();
+
+                expect(mapBounds.minX).to.be.equal(-2);
+                expect(mapBounds.minY).to.be.equal(-6);
+                expect(mapBounds.maxX).to.be.equal(4);
                 expect(mapBounds.maxY).to.be.equal(1);
             });
         });
