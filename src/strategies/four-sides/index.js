@@ -61,7 +61,7 @@ function createInstance() {
     function isAllMatrixFilledWithBlocks(matrix) {
         return matrix.every(function forEachRow(row) {
             return row.every(function isBlockInstance(value) {
-                return value instanceof Block;
+                return value instanceof Block || value === null;
             });
         });
     }
@@ -294,9 +294,10 @@ function createInstance() {
         return adaptMapMatrix(partialMap, minX, maxY);
     }
 
+    // do not use getPartialMap neither getMapBounds
     function getMap() {
         var map = instanceProps.mapManager.getMap();
-        var mapBounds = instanceProps.mapManager.getMapBounds();
+        var mapBounds = instanceProps.mapManager.getWrappedBounds();
         return adaptMapMatrix(map, mapBounds.minX, mapBounds.maxY);
     }
 
@@ -308,7 +309,6 @@ function createInstance() {
         getMap: getMap
     };
 }
-
 
 module.exports = {
     name: name,

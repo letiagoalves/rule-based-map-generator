@@ -5,7 +5,7 @@
         "vertical": 10
     },
     "initialBlock": "b1",
-    "initialMapSize": 7,
+    "initialMapSize": 4,
     "blocks": [{
         "id": "b1",
         "classes": [],

@@ -18,9 +18,9 @@ function getAndLog(minX, minY, maxX, maxY) {
     myUtils.logTable(partialMap);
 }
 
-getAndLog(-2, -2, 0, 0);
-getAndLog(0, 0, 2, 2);
-
+myUtils.logTable(worldInstance.getMap());
+getAndLog(-4, 1, -2, 3);
+//getAndLog(-2, 1, 0, 3);
 
 // TMP
 map = worldInstance.getMap();
