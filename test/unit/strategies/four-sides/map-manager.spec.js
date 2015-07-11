@@ -98,7 +98,7 @@ describe('map-manager.js', function () {
                 var mapBounds;
 
                 victim.expandMap(0, 0, 1, 2);
-                mapBounds = victim.getMapBounds();
+                mapBounds = victim.getWrappedBounds();
 
                 expect(mapBounds.minX).to.be.equal(-2);
                 expect(mapBounds.minY).to.be.equal(-2);
@@ -110,7 +110,7 @@ describe('map-manager.js', function () {
                 var mapBounds;
 
                 victim.expandMap(0, 0, 2, 1);
-                mapBounds = victim.getMapBounds();
+                mapBounds = victim.getWrappedBounds();
 
                 expect(mapBounds.minX).to.be.equal(-2);
                 expect(mapBounds.minY).to.be.equal(-2);
@@ -118,16 +118,61 @@ describe('map-manager.js', function () {
                 expect(mapBounds.maxY).to.be.equal(1);
             });
 
-            it('should expand both ways', function () {
+            it('should expand both right and upwards', function () {
                 var mapBounds;
 
                 victim.expandMap(0, 0, 2, 2);
-                mapBounds = victim.getMapBounds();
+                mapBounds = victim.getWrappedBounds();
 
                 expect(mapBounds.minX).to.be.equal(-2);
                 expect(mapBounds.minY).to.be.equal(-2);
                 expect(mapBounds.maxX).to.be.equal(2);
                 expect(mapBounds.maxY).to.be.equal(2);
+            });
+
+        });
+
+        describe('q2', function () {
+            var victim;
+
+            beforeEach(function () {
+                victim = new MapManager(4);
+            });
+
+            it('should expand upwards', function () {
+                var mapBounds;
+
+                victim.expandMap(-2, -2, 0, 2);
+                mapBounds = victim.getWrappedBounds();
+
+                expect(mapBounds.minX).to.be.equal(-2);
+                expect(mapBounds.minY).to.be.equal(-2);
+                expect(mapBounds.maxX).to.be.equal(1);
+                expect(mapBounds.maxY).to.be.equal(2);
+            });
+
+            it('should expand to the left side', function () {
+                var mapBounds;
+
+                victim.expandMap(-5, -2, 0, 1);
+                mapBounds = victim.getWrappedBounds();
+
+                expect(mapBounds.minX).to.be.equal(-5);
+                expect(mapBounds.minY).to.be.equal(-2);
+                expect(mapBounds.maxX).to.be.equal(1);
+                expect(mapBounds.maxY).to.be.equal(1);
+            });
+
+            it('should expand both left and upwards', function () {
+                var mapBounds;
+
+                victim.expandMap(-7, -2, 0, 9);
+                mapBounds = victim.getWrappedBounds();
+
+                expect(mapBounds.minX).to.be.equal(-7);
+                expect(mapBounds.minY).to.be.equal(-2);
+                expect(mapBounds.maxX).to.be.equal(1);
+                expect(mapBounds.maxY).to.be.equal(9);
             });
 
         });
