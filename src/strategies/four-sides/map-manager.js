@@ -174,12 +174,29 @@ function MapManager(initialSize) {
         }
     }
 
+    function expandMapQ3(minX, minY) {
+        // TODO: assert minX and maxY are Q3
+
+        var i;
+        var q3Limit = getQ3Limit();
+        var missingColumns = q3Limit.x - minX;
+        var missingRows = q3Limit.y - minY;
+
+        for (i = 0; i < missingRows; i++) {
+            map.q3.pushRow(Array(map.q3.cols()));
+        }
+
+        for (i = 0; i < missingColumns; i++) {
+            map.q3.pushCol(Array(map.q3.rows()));
+        }
+    }
+
     function expandMap(minX, minY, maxX, maxY) {
         console.info(chalk.green('Start expansion'));
         // TODO: expand only to map limits defined in map constraints
         expandMapQ1(maxX, maxY);
         expandMapQ2(minX, maxY);
-        //expandMapQ3(minX, minY);
+        expandMapQ3(minX, minY);
         //expandMapQ4(maxX, minY);
         console.info(chalk.green('End expansion'));
     }
