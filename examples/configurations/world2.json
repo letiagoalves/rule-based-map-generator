@@ -1,6 +1,6 @@
 {
     "numberOfSides": 4,
-    "bounds": {
+    "maxMapSize": {
         "horizontal": 10,
         "vertical": 10
     },

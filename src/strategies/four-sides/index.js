@@ -41,7 +41,7 @@ function createInstance() {
     function init(worldConstraints, blocks) {
         var initialBlock;
 
-        instanceProps.mapManager = new MapManager(worldConstraints.initialMapSize);
+        instanceProps.mapManager = new MapManager(worldConstraints.initialMapSize, worldConstraints.maxMapSize);
         instanceProps.mapStatus = new MapStatus();
         instanceProps.worldConstraints = worldConstraints;
         instanceProps.blocksMap = utils.createMapUsingCallback(blocks, function resolveId(b) {
@@ -250,22 +250,18 @@ function createInstance() {
         console.log('generate', minX, minY, maxX, maxY);
         // generate by quadrants
 
-        console.log(chalk.blue('Q1'));
         if (quadrantsHelper.isQ1(maxX, maxY)) {
             generateInQ1(quadrantsHelper.getQ1PartOfMap(minX, minY, maxX, maxY));
         }
 
-        console.log(chalk.blue('Q2'));
         if (quadrantsHelper.isQ2(minX, maxY)) {
             generateInQ2(quadrantsHelper.getQ2PartOfMap(minX, minY, maxX, maxY));
         }
 
-        console.log(chalk.blue('Q3'));
         if (quadrantsHelper.isQ3(minX, minY)) {
             generateInQ3(quadrantsHelper.getQ3PartOfMap(minX, minY, maxX, maxY));
         }
 
-        console.log(chalk.blue('Q4'));
         if (quadrantsHelper.isQ4(maxX, minY)) {
             generateInQ4(quadrantsHelper.getQ4PartOfMap(minX, minY, maxX, maxY));
         }
@@ -274,18 +270,19 @@ function createInstance() {
     function getPartialMap(minX, minY, maxX, maxY) {
         var partialMap;
         var isAllFilled;
-        // TODO: throw nice error when getting invalid part of map (ex: outside map limits)
 
-        // TODO: check if inside map boounds
-        console.log('isInsideMapBounds', arguments, instanceProps.mapManager.isInsideMapBounds(minX, minY, maxX, maxY));
         if (!instanceProps.mapManager.isInsideMapBounds(minX, minY, maxX, maxY)) {
+            throw new Error('Request map is outside map bounds');
+        }
+
+        // expand if necessary
+        if (!instanceProps.mapManager.isInsideMapWrappedBounds(minX, minY, maxX, maxY)) {
             instanceProps.mapManager.expandMap(minX, minY, maxX, maxY);
         }
 
         partialMap = instanceProps.mapManager.getPartialMap(minX, minY, maxX, maxY);
         isAllFilled = isAllMatrixFilledWithBlocks(partialMap);
 
-        console.log('isAllFilled', isAllFilled);
         if (!isAllFilled) {
             generate(minX, minY, maxX, maxY);
             partialMap = instanceProps.mapManager.getPartialMap(minX, minY, maxX, maxY);

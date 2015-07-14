@@ -3,7 +3,7 @@
 var Block = require('./../block');
 var Connector = require('./../connector');
 var World = require('./../world');
-var WorldConstraints = require('./../world/world-constraints.js');
+//var WorldConstraints = require('./../world/world-constraints.js');
 
 
 function getStrategyFactory(numberOfSides) {
@@ -28,9 +28,13 @@ function createBlockFactory(numberOfSides) {
     };
 }
 
+/*
 function instantiateWorldConstraintsFromConfiguration (config) {
-    return new WorldConstraints(config.bounds, config.initialBlock, config.initialMapSize);
-}
+    return new WorldConstraints(config.initialMapSize, {
+        maxMapSize: config.maxMapSize,
+        initialBlock: config.initialBlock
+    });
+}*/
 
 /**
  * @function createWorld
@@ -39,9 +43,10 @@ function instantiateWorldConstraintsFromConfiguration (config) {
  */
 function createWorldInstance(numberOfSides, constraints, blocks) {
     var strategyFactory = getStrategyFactory(numberOfSides);
-    var worldConstraints = instantiateWorldConstraintsFromConfiguration(constraints);
+    // TODO:
+    //var worldConstraints = instantiateWorldConstraintsFromConfiguration(constraints);
 
-    return new World(strategyFactory.createInstance(), worldConstraints, blocks);
+    return new World(strategyFactory.createInstance(), constraints, blocks);
 }
 
 module.exports = {

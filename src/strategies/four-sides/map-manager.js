@@ -8,17 +8,42 @@ var quadrantsHelper = require('./quadrants-helper.js');
 var validator = require('./../../validator');
 var Block = require('./../../block');
 
-function MapManager(initialSize) {
-    var quarterOfSize = initialSize / 2;
-    // TODO: manage rest
-    //var rest = initialSize % 2;
-    var sizeForEachQadrant = Math.floor(quarterOfSize);
-    var map = {
-        q1: new Matrix(sizeForEachQadrant, sizeForEachQadrant),
-        q2: new Matrix(sizeForEachQadrant, sizeForEachQadrant),
-        q3: new Matrix(sizeForEachQadrant, sizeForEachQadrant),
-        q4: new Matrix(sizeForEachQadrant, sizeForEachQadrant)
-    };
+function MapManager(initialSize, maxMapSize) {
+    // TODO: assert arguments
+    var map;
+    var bounds;
+
+    function buildMap(mapInitialSize) {
+        var adjustValue = mapInitialSize % 2 === 0 ? 0 : 1;
+        var q1AndQ2Height = Math.floor(mapInitialSize / 2) + adjustValue;
+        var q3AndQ4Height = mapInitialSize - q1AndQ2Height;
+        var q1AndQ4Width = Math.floor(mapInitialSize / 2) + adjustValue;
+        var q2AndQ3Width = mapInitialSize - q1AndQ4Width;
+
+        return {
+            q1: new Matrix(q1AndQ2Height, q1AndQ4Width),
+            q2: new Matrix(q1AndQ2Height, q2AndQ3Width),
+            q3: new Matrix(q3AndQ4Height, q2AndQ3Width),
+            q4: new Matrix(q3AndQ4Height, q1AndQ4Width)
+        };
+    }
+
+    function buildBounds(horizontal, vertical) {
+        var horizontalAdjustValue = horizontal % 2 === 0 ? 0 : 1;
+        var verticalAdjustValue = vertical % 2 === 0 ? 0 : 1;
+
+        var q1AndQ2Height = Math.floor(vertical / 2) + verticalAdjustValue;
+        var q3AndQ4Height = vertical - q1AndQ2Height;
+        var q1AndQ4Width = Math.floor(horizontal / 2) + horizontalAdjustValue;
+        var q2AndQ3Width = horizontal - q1AndQ4Width;
+
+        return {
+            minX: -q2AndQ3Width,
+            minY: -q3AndQ4Height,
+            maxX: q1AndQ4Width,
+            maxY: q1AndQ2Height
+        };
+    }
 
     function get(x, y) {
         var row = y;
@@ -115,6 +140,7 @@ function MapManager(initialSize) {
 
     // TODO: documentation
     function getPartialMap(minX, minY, maxX, maxY) {
+        // TODO: assert is inside map bounds
         var xSize = Math.abs(maxX - minX) + 1;
         var ySize = Math.abs(maxY - minY) + 1;
         var subMapMatrix = new Matrix(xSize, ySize, function fillFunction (row, col) {
@@ -126,18 +152,24 @@ function MapManager(initialSize) {
 
     // TODO: documentation
     function getMap() {
-        var bounds = getWrappedBounds();
-        return getPartialMap(bounds.minX, bounds.minY, bounds.maxX, bounds.maxY);
+        // TODO: assert is inside map bounds
+        var wrappedBounds = getWrappedBounds();
+        return getPartialMap(wrappedBounds.minX, wrappedBounds.minY, wrappedBounds.maxX, wrappedBounds.maxY);
     }
 
     function isInsideMapBounds(minX, minY, maxX, maxY) {
-        var q1Limit = getQ1Limit();
-        var q2Limit = getQ2Limit();
-        var q3Limit = getQ3Limit();
-        var q4Limit = getQ4Limit();
+        if (!bounds) {
+            return true;
+        }
 
-        return minX >= Math.max(q2Limit.x, q3Limit.x) && minY >= Math.max(q3Limit.y, q4Limit.y) &&
-               maxX <= Math.min(q1Limit.x, q4Limit.x) && maxY <= Math.min(q1Limit.y, q2Limit.y);
+        return minX >= bounds.minX && minY >= bounds.minY &&
+               maxX <= bounds.maxX && maxY <= bounds.maxY;
+    }
+
+    function isInsideMapWrappedBounds(minX, minY, maxX, maxY) {
+        var wrappedBounds = getWrappedBounds();
+        return minX >= wrappedBounds.minX && minY >= wrappedBounds.minY &&
+               maxX <= wrappedBounds.maxX && maxY <= wrappedBounds.maxY;
     }
 
     function expandMapQ1(maxX, maxY) {
@@ -209,8 +241,11 @@ function MapManager(initialSize) {
     }
 
     function expandMap(minX, minY, maxX, maxY) {
+        if (!isInsideMapBounds(minX, minY, maxX, maxY)) {
+            throw new Error('Cannot expand outside map bounds');
+        }
+
         console.info(chalk.green('Start expansion'));
-        // TODO: expand only to map limits defined in map constraints
         expandMapQ1(maxX, maxY);
         expandMapQ2(minX, maxY);
         expandMapQ3(minX, minY);
@@ -218,11 +253,16 @@ function MapManager(initialSize) {
         console.info(chalk.green('End expansion'));
     }
 
+    // init
+    map = buildMap(initialSize);
+    bounds = maxMapSize ? buildBounds(maxMapSize.horizontal, maxMapSize.vertical) : null;
+
     // public
     this.getWrappedBounds = getWrappedBounds;
     this.getPartialMap = getPartialMap;
     this.getMap = getMap;
     this.isInsideMapBounds = isInsideMapBounds;
+    this.isInsideMapWrappedBounds = isInsideMapWrappedBounds;
     this.expandMap = expandMap;
     this.get = get;
     this.set = set;

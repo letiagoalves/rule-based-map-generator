@@ -16,7 +16,10 @@
             "LEFT": "none"
         },
         "constraints": {
-            "maxOccupationPercentage": 25
+            "minimumDistance": {
+                "b1": 4,
+                "b3": 8
+            }
         }
     }, {
         "id": "b2",
@@ -28,7 +31,6 @@
             "LEFT": "none"
         },
         "constraints": {
-            "maxOccupationPercentage": 50
         }
     }, {
         "id": "b3",
