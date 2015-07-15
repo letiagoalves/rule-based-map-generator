@@ -16,10 +16,6 @@
             "LEFT": "none"
         },
         "constraints": {
-            "minimumDistance": {
-                "b1": 4,
-                "b3": 8
-            }
         }
     }, {
         "id": "b2",
@@ -31,6 +27,10 @@
             "LEFT": "none"
         },
         "constraints": {
+            "minimumDistance": {
+                "b1": 4,
+                "b3": 8
+            }
         }
     }, {
         "id": "b3",
@@ -41,7 +41,11 @@
             "BOTTOM": "none",
             "LEFT": "none"
         },
-        "constraints": {}
+        "constraints": {
+            "minimumDistance": {
+                "b2": 10
+            }
+        }
     }],
     "connectors": [{
         "id": "none",

@@ -8,6 +8,7 @@ var isString = require('mout/lang/isString');
 var applyBlackAndWhiteLists = require('./rules/blacklist.js');
 var applyMaxOccupation = require('./rules/max-occupation.js');
 var applyMaxOccupationPercentage = require('./rules/max-occupation-percentage.js');
+var applyMinimumDistance = require('./rules/minimum-distance.js');
 
 var sidesRelation = {
     UP: 'BOTTOM',
@@ -18,6 +19,10 @@ var sidesRelation = {
 
 function isGreaterThanZero(value) {
     return value > 0;
+}
+
+function isNotNull(value) {
+    return value !== null;
 }
 
 function useBlackAndWhiteListsRule(candidates, neighbours, blocksMap) {
@@ -59,7 +64,21 @@ function useMaxOccupationPercentageRule(candidates, blocksMap, mapStatus) {
     return applyMaxOccupationPercentage(candidates, blocksMaxOccupationPercentage, mapStatus);
 }
 
-function selectBlock(neighbours, blocksMap, mapStatus) {
+function useMinimumDistanceRule(candidates, blocksMap, position, getPartialMapFn) {
+    var minimumDistancesByBlockId = objectMap(blocksMap, function extractContraint(block) {
+        return block.getMinimumDistancesToOtherBlocks();
+    });
+
+    // remove null values
+    minimumDistancesByBlockId = objectFilter(minimumDistancesByBlockId, isNotNull);
+
+    console.log('minimunDistance', minimumDistancesByBlockId);
+
+    return applyMinimumDistance(candidates, minimumDistancesByBlockId, position, getPartialMapFn);
+}
+
+function selectBlock(neighbours, blocksMap, mapStatus, position, getPartialMapFn) {
+    // TODO: assert arguments
     var chosenOne;
     var candidates = Object.keys(blocksMap);
 
@@ -70,7 +89,9 @@ function selectBlock(neighbours, blocksMap, mapStatus) {
     candidates = useMaxOccupationRule(candidates, blocksMap, mapStatus);
     //console.log('candidates after max occupation', candidates);
     candidates = useMaxOccupationPercentageRule(candidates, blocksMap, mapStatus);
-    //console.log('candidates after max occupation percentage', candidates);
+    //console.log('candidates after minimun distance', candidates);
+    candidates = useMinimumDistanceRule(candidates, blocksMap, position, getPartialMapFn);
+    console.log('candidates after max occupation percentage', candidates);
 
     // TODO: TEMP - improve final selection
     chosenOne = candidates.length > 0 ? candidates[0] : null;

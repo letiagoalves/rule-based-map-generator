@@ -20,17 +20,6 @@ function getAndLog(minX, minY, maxX, maxY) {
 
 myUtils.logTable(worldInstance.getMap());
 getAndLog(0, 0, 1, 1);
-getAndLog(0, 0, 2, 2);
-getAndLog(0, 0, 3, 4);
-getAndLog(0, 0, 4, 4);
-getAndLog(0, 0, 5, 5);
-
-getAndLog(0, 0, 0, 0);
-getAndLog(-1, -1, 0, 0);
-getAndLog(-3, -3, 0, 0);
-getAndLog(-4, -4, 0, 0);
-getAndLog(-5, -5, 0, 0);
-getAndLog(-6, -6, 0, 0);
 
 // TMP
 map = worldInstance.getMap();

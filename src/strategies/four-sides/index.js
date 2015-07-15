@@ -92,7 +92,13 @@ function createInstance() {
 
     function generateAtPosition(x, y) {
         var neighbours = buildNeighbours(x, y);
-        var blockId = mapGenerator.selectBlock(neighbours, instanceProps.blocksMap, instanceProps.mapStatus);
+        var blockId = mapGenerator.selectBlock(
+            neighbours,
+            instanceProps.blocksMap,
+            instanceProps.mapStatus,
+            { x: x, y: y },
+            instanceProps.mapManager.getPartialMap
+        );
         var block = blockId && instanceProps.blocksMap[blockId];
         console.log(chalk.red('generateAtPosition (%s, %s) - %s'), x, y, blockId);
         instanceProps.mapManager.set(x, y, block);

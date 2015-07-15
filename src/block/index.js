@@ -43,6 +43,10 @@ function Block(id, sidesTemplate, classes, constraints) {
         return constraints.maxOccupationPercentage;
     }
 
+    function getMinimumDistancesToOtherBlocks() {
+        return constraints.minimumDistance;
+    }
+
     /**
      * Sets a connector to a side
      * @param {String}      side      Block side
@@ -65,6 +69,7 @@ function Block(id, sidesTemplate, classes, constraints) {
     this.getNumberOfSides = getNumberOfSides;
     this.getMaxOccupation = getMaxOccupation;
     this.getMaxOccupationPercentage = getMaxOccupationPercentage;
+    this.getMinimumDistancesToOtherBlocks = getMinimumDistancesToOtherBlocks;
     this.setSideConnector = setSideConnector;
     this.toString = toString;
 }
