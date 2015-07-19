@@ -27,7 +27,7 @@ function adaptMapMatrix(matrix, minX, maxY) {
     });
 }
 
-function createInstance() {
+function createInstance(randomMatrixGenerator) {
 
     // TODO: destruct this
     // TODO: pass blocksMap to mapStatus
@@ -92,12 +92,14 @@ function createInstance() {
 
     function generateAtPosition(x, y) {
         var neighbours = buildNeighbours(x, y);
+        var randomValueForPosition = randomMatrixGenerator.rand(x, y);
         var blockId = mapGenerator.selectBlock(
             neighbours,
             instanceProps.blocksMap,
             instanceProps.mapStatus,
             { x: x, y: y },
-            instanceProps.mapManager.getPartialMap
+            instanceProps.mapManager.getPartialMap,
+            randomValueForPosition
         );
         var block = blockId && instanceProps.blocksMap[blockId];
         console.log(chalk.red('generateAtPosition (%s, %s) - %s'), x, y, blockId);

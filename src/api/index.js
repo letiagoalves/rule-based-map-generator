@@ -1,5 +1,7 @@
 'use strict';
 
+var randomMatrix = require('random-matrix');
+
 var Block = require('./../block');
 var Connector = require('./../connector');
 var World = require('./../world');
@@ -42,11 +44,14 @@ function instantiateWorldConstraintsFromConfiguration (config) {
  * @return {[type]}          [description]
  */
 function createWorldInstance(numberOfSides, constraints, blocks) {
+    // TODO: assert seed
     var strategyFactory = getStrategyFactory(numberOfSides);
+    var randomMatrixGenerator = randomMatrix(constraints.seed);
+    var strategy = strategyFactory.createInstance(randomMatrixGenerator);
     // TODO:
     //var worldConstraints = instantiateWorldConstraintsFromConfiguration(constraints);
 
-    return new World(strategyFactory.createInstance(), constraints, blocks);
+    return new World(strategy, constraints, blocks);
 }
 
 module.exports = {

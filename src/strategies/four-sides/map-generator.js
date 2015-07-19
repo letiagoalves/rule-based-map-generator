@@ -77,9 +77,10 @@ function useMinimumDistanceRule(candidates, blocksMap, position, getPartialMapFn
     return applyMinimumDistance(candidates, minimumDistancesByBlockId, position, getPartialMapFn);
 }
 
-function selectBlock(neighbours, blocksMap, mapStatus, position, getPartialMapFn) {
+function selectBlock(neighbours, blocksMap, mapStatus, position, getPartialMapFn, randomValue) {
     // TODO: assert arguments
-    var chosenOne;
+    // randomValue between 0 and 1
+    var randomItemPosition;
     var candidates = Object.keys(blocksMap);
 
     console.log('candidates before', candidates);
@@ -93,10 +94,19 @@ function selectBlock(neighbours, blocksMap, mapStatus, position, getPartialMapFn
     candidates = useMinimumDistanceRule(candidates, blocksMap, position, getPartialMapFn);
     console.log('candidates after max occupation percentage', candidates);
 
-    // TODO: TEMP - improve final selection
-    chosenOne = candidates.length > 0 ? candidates[0] : null;
+    if (candidates.length === 1) {
+        return candidates[0];
+    }
 
-    return chosenOne;
+    if (candidates.length > 1) {
+        randomItemPosition = Math.floor(randomValue * candidates.length);
+        // because if randomValue === 1, array position will be outside bounds
+        randomItemPosition = Math.min(randomItemPosition, candidates.length - 1);
+
+        return candidates[randomItemPosition];
+    }
+
+    return null;
 }
 
 module.exports = {
