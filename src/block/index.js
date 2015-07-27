@@ -3,6 +3,7 @@
 // TODO: return copies and only trough getters
 var validator = require('./../validator');
 var schema = require('./schema');
+var Connector = require('./../connector');
 
 function createSidesFromTemplate(template) {
     var sides = {};
@@ -53,6 +54,11 @@ function Block(id, sidesTemplate, classes, constraints) {
      * @param {Connector}   connector Connector
      */
     function setSideConnector(side, connector) {
+        // TODO: assert is valid size, and connector is type connector or null
+        if (connector !== null && !(connector instanceof Connector)) {
+            throw new Error('Invalid connector');
+        }
+
         if (!sides.hasOwnProperty(side)) {
             throw new Error('Invalid side');
         }
@@ -65,6 +71,7 @@ function Block(id, sidesTemplate, classes, constraints) {
 
     // public
     this.getId = getId;
+    // TODO: remove sides visibility, implement getSideConnector
     this.getSides = getSides;
     this.getNumberOfSides = getNumberOfSides;
     this.getMaxOccupation = getMaxOccupation;

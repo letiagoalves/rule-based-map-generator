@@ -2,6 +2,7 @@
 
 var forOwn = require('mout/object/forOwn');
 var objectMap = require('mout/object/map');
+var isString = require('mout/lang/isString');
 
 var api = require('./api');
 var utils = require('./utils/utils.js');
@@ -49,7 +50,7 @@ function parse(config) {
     config.blocks.forEach(function setConnectors(blockDefinition) {
         var blockInstance = blocksMap[blockDefinition.id];
         var sideConnectors = objectMap(blockDefinition.connectors, function mapToConnector(connectorId) {
-            return connectorsMap[connectorId];
+            return isString(connectorId) ? connectorsMap[connectorId] : null;
         });
 
         forOwn(sideConnectors, function setSideConnector(connector, side) {

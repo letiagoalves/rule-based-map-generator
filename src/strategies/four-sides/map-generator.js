@@ -2,20 +2,12 @@
 
 var objectMap = require('mout/object/map');
 var objectFilter = require('mout/object/filter');
-var isString = require('mout/lang/isString');
 
 // rules
 var applyBlackAndWhiteLists = require('./rules/blacklist.js');
 var applyMaxOccupation = require('./rules/max-occupation.js');
 var applyMaxOccupationPercentage = require('./rules/max-occupation-percentage.js');
 var applyMinimumDistance = require('./rules/minimum-distance.js');
-
-var sidesRelation = {
-    UP: 'BOTTOM',
-    BOTTOM: 'UP',
-    LEFT: 'RIGHT',
-    RIGHT: 'LEFT'
-};
 
 function isGreaterThanZero(value) {
     return value > 0;
@@ -26,20 +18,7 @@ function isNotNull(value) {
 }
 
 function useBlackAndWhiteListsRule(candidates, neighbours, blocksMap) {
-    var neighbourConnectors = objectMap(neighbours, function mapNeighbour(neighbourId, side) {
-        var connectorLookUpSide;
-        var neighbourBlockSides;
-
-        if (!isString(neighbourId)) {
-            return null;
-        }
-
-        connectorLookUpSide = sidesRelation[side];
-        neighbourBlockSides = blocksMap[neighbourId].getSides();
-        return neighbourBlockSides[connectorLookUpSide];
-    });
-
-    return applyBlackAndWhiteLists(candidates, neighbourConnectors);
+    return applyBlackAndWhiteLists(candidates, neighbours, blocksMap);
 }
 
 function useMaxOccupationRule(candidates, blocksMap, mapStatus) {
