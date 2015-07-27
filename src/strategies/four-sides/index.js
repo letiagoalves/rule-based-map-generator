@@ -38,26 +38,6 @@ function createInstance(randomMatrixGenerator) {
         worldConstraints: null
     };
 
-    function init(worldConstraints, blocks) {
-        var initialBlock;
-
-        instanceProps.mapManager = new MapManager(worldConstraints.initialMapSize, worldConstraints.maxMapSize);
-        instanceProps.mapStatus = new MapStatus();
-        instanceProps.worldConstraints = worldConstraints;
-        instanceProps.blocksMap = utils.createMapUsingCallback(blocks, function resolveId(b) {
-            return b.getId();
-        });
-
-        if (worldConstraints.initialBlock) {
-            initialBlock = instanceProps.blocksMap[worldConstraints.initialBlock];
-            if (!initialBlock) {
-                throw new Error('Initial block is invalid');
-            }
-            instanceProps.mapManager.set(0, 0, initialBlock);
-            instanceProps.mapStatus.addBlock(initialBlock.getId());
-        }
-    }
-
     function isAllMatrixFilledWithBlocks(matrix) {
         return matrix.every(function forEachRow(row) {
             return row.every(function isBlockInstance(value) {
@@ -304,6 +284,31 @@ function createInstance(randomMatrixGenerator) {
         var map = instanceProps.mapManager.getMap();
         var mapBounds = instanceProps.mapManager.getWrappedBounds();
         return adaptMapMatrix(map, mapBounds.minX, mapBounds.maxY);
+    }
+
+    function init(worldConstraints, blocks) {
+        var initialBlock;
+        var initialBounds;
+
+        instanceProps.mapManager = new MapManager(worldConstraints.initialMapSize, worldConstraints.maxMapSize);
+        instanceProps.mapStatus = new MapStatus();
+        instanceProps.worldConstraints = worldConstraints;
+        instanceProps.blocksMap = utils.createMapUsingCallback(blocks, function resolveId(b) {
+            return b.getId();
+        });
+
+        if (worldConstraints.initialBlock) {
+            initialBlock = instanceProps.blocksMap[worldConstraints.initialBlock];
+            if (!initialBlock) {
+                throw new Error('Initial block is invalid');
+            }
+            instanceProps.mapManager.set(0, 0, initialBlock);
+            instanceProps.mapStatus.addBlock(initialBlock.getId());
+        }
+
+        // generate initial map
+        initialBounds = instanceProps.mapManager.getWrappedBounds();
+        generate(initialBounds.minX, initialBounds.minY, initialBounds.maxX, initialBounds.maxY);
     }
 
     // public
