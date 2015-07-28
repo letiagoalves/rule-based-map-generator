@@ -29,7 +29,7 @@ function MapStatus() {
     }
 
     function getNumberOfTotalBlocks() {
-        return objectReduce(blocksCount, sum);
+        return objectReduce(blocksCount, sum, 0);
     }
 
     function getBlockOccupation(blockId) {
