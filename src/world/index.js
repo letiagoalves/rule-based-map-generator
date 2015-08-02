@@ -43,8 +43,13 @@ function World(strategy, constraints, blocks) {
         }
     }
 
+    function hasStarted() {
+        return started;
+    }
+
     // public
     this.start = start;
+    this.hasStarted = hasStarted;
     this.getPartialMap = getPartialMap;
     this.getMap = getMap;
     this.invalidate = invalidate;
