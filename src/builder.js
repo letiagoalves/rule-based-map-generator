@@ -3,6 +3,7 @@
 var forOwn = require('mout/object/forOwn');
 var objectMap = require('mout/object/map');
 var isString = require('mout/lang/isString');
+var randomMatrix = require('random-matrix');
 
 var api = require('./api');
 var utils = require('./utils/utils.js');
@@ -18,16 +19,22 @@ function parse(config) {
     var blocksMap;
     var connectors;
     var connectorsMap;
+    var strategyFactory;
+    var strategy;
+    var randomMatrixGenerator;
 
     // TODO: validate JSON
+    // TODO: assert seed before passing it ro randomMatrix
     if (typeof config !== 'object') {
         throw new Error('temp error: invalid config');
     }
 
-    // TODO: rethink strategies
+    strategyFactory = api.getStrategyFactory(config.strategy);
+    randomMatrixGenerator = randomMatrix(config.seed);
+    strategy = strategyFactory.createInstance(randomMatrixGenerator);
 
     // create block
-    blockFactory = api.createBlockFactory(config.numberOfSides);
+    blockFactory = api.createBlockFactory(strategyFactory.sidesTemplate);
 
     blocks = config.blocks.map(function mapToBlockInstance(block) {
         return blockFactory(block.id, block.classes, block.constraints);
@@ -58,7 +65,7 @@ function parse(config) {
         });
     });
 
-    return api.createWorldInstance(config.numberOfSides, config, blocks);
+    return api.createWorldInstance(strategy, config, blocks);
 }
 
 module.exports = {

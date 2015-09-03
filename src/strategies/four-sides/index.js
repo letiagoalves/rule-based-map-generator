@@ -9,7 +9,7 @@ var Block = require('./../../block');
 var utils = require('./../../utils/utils.js');
 
 var name = 'Four sides block strategy';
-var sides = ['UP', 'RIGHT', 'BOTTOM', 'LEFT'];
+var sidesTemplate = ['UP', 'RIGHT', 'BOTTOM', 'LEFT'];
 
 function adaptMapMatrix(matrix, minX, maxY) {
     var y = maxY + 1;
@@ -322,6 +322,6 @@ function createInstance(randomMatrixGenerator) {
 
 module.exports = {
     name: name,
-    sides: sides,
+    sidesTemplate: sidesTemplate,
     createInstance: createInstance
 };
