@@ -5,8 +5,8 @@ var objectMap = require('mout/object/map');
 var isString = require('mout/lang/isString');
 var randomMatrix = require('random-matrix');
 
-var api = require('./api');
-var utils = require('./utils/utils.js');
+var api = require('./../api');
+var utils = require('./../utils/utils.js');
 
 /**
  * Parses a world configuration and returns a world instance

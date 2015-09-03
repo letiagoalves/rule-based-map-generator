@@ -2,7 +2,7 @@
 
 var chalk = require('chalk');
 var world1Config = require('./configurations/world2.json');
-var builder = require('./../src/builder.js');
+var parser = require('./../src/parser');
 var myUtils = require('./../src/utils/utils.js');
 
 var worldInstance;
@@ -10,7 +10,7 @@ var map;
 
 console.log(chalk.bgBlue('Running Example 2'));
 
-worldInstance = builder.parse(world1Config);
+worldInstance = parser.parse(world1Config);
 worldInstance.start();
 map = worldInstance.getPartialMap(-2, -2, 2, 2);
 myUtils.logTable(map);
