@@ -5,6 +5,8 @@ var objectMap = require('mout/object/map');
 var isString = require('mout/lang/isString');
 var randomMatrix = require('random-matrix');
 
+var validator = require('./../validator');
+var schema = require('./schema.js');
 var api = require('./../api');
 var utils = require('./../utils/utils.js');
 
@@ -23,11 +25,8 @@ function parse(config) {
     var strategy;
     var randomMatrixGenerator;
 
-    // TODO: validate JSON
-    // TODO: assert seed before passing it ro randomMatrix
-    if (typeof config !== 'object') {
-        throw new Error('temp error: invalid config');
-    }
+    // assertions
+    config = validator.assert(config, schema.config, 'config');
 
     strategyFactory = api.getStrategyFactory(config.strategy);
     randomMatrixGenerator = randomMatrix(config.seed);

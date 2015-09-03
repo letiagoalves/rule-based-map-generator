@@ -5,7 +5,6 @@ var Connector = require('./../connector');
 var World = require('./../world');
 //var WorldConstraints = require('./../world/world-constraints.js');
 var strategies = require('./../strategies/index.js');
-console.log('strategies', strategies);
 
 function getStrategyFactory(strategyName) {
     if (strategies.hasOwnProperty(strategyName)) {

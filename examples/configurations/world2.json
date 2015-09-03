@@ -1,12 +1,12 @@
 {
     "seed": 1337,
     "strategy": "squareGrid",
-    "maxMapSize": {
+    "initialMapSize": 7,
+    "bounds": {
         "horizontal": 10,
         "vertical": 10
     },
-    "initialBlock": "b1",
-    "initialMapSize": 7,
+    "mapCenter": "b1",
     "blocks": [{
         "id": "b1",
         "classes": [],
