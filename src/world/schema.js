@@ -3,13 +3,9 @@
 var Joi = require('joi');
 var Block = require('./../block');
 var WorldConstraints = require('./../world-constraints');
+var Strategy = require('./../strategies/strategy.js');
 
-var strategySchema = Joi.object().keys({
-    init: Joi.func().required(),
-    getAtPosition: Joi.func().required(),
-    getPartialMap: Joi.func().required(),
-    getMap: Joi.func().required()
-}).required();
+var strategySchema = Joi.object().type(Strategy).required();
 
 var blocksSchema = Joi.array().items(Joi.object().type(Block)).min(2).required();
 

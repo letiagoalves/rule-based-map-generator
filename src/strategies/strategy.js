@@ -1,23 +1,25 @@
 'use strict';
 
-var interfaceDeclaration = ['init', 'get', 'getAll'];
+var Joi = require('joi');
 
-function Strategy(name, sides, interfaceImplementation) {
+var validator = require('./../validator');
+
+var interfaceSchema = Joi.object().keys({
+    init: Joi.func().required(),
+    getAtPosition: Joi.func().required(),
+    getPartialMap: Joi.func().required(),
+    getMap: Joi.func().required()
+}).required();
+
+var interfaceDeclaration = ['init', 'getAtPosition', 'getPartialMap', 'getMap'];
+
+function Strategy(interfaceImplementation) {
     var that = this;
 
-    // TODO: assertions
-    //assert(Object.keys(interfaceImplementation)).toequal(interfaceDeclaration);
-    var props = {
-        name: name
-    };
-
-    this.getName = function getName() {
-        return props.name;
-    };
+    interfaceImplementation = validator.assert(interfaceImplementation, interfaceSchema, 'Strategy.interfaceImplementation');
 
     // set interface methods
     interfaceDeclaration.forEach(function setMethodImplementation (methodName) {
-        //TODO assert interfaceImplementation[methodName]
         that[methodName] = interfaceImplementation[methodName];
     });
 }

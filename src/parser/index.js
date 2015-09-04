@@ -9,6 +9,7 @@ var validator = require('./../validator');
 var schema = require('./schema.js');
 var api = require('./../api');
 var utils = require('./../utils/utils.js');
+var Strategy = require('./../strategies/strategy.js');
 
 /**
  * Parses a world configuration and returns a world instance
@@ -22,6 +23,7 @@ function parse(config) {
     var connectors;
     var connectorsMap;
     var strategyFactory;
+    var strategyImplementation;
     var strategy;
     var randomMatrixGenerator;
 
@@ -30,7 +32,8 @@ function parse(config) {
 
     strategyFactory = api.getStrategyFactory(config.strategy);
     randomMatrixGenerator = randomMatrix(config.seed);
-    strategy = strategyFactory.createInstance(randomMatrixGenerator);
+    strategyImplementation = strategyFactory.createInstance(randomMatrixGenerator);
+    strategy = new Strategy(strategyImplementation);
 
     // create block
     blockFactory = api.createBlockFactory(strategyFactory.sidesTemplate);
