@@ -287,23 +287,26 @@ function createInstance(randomMatrixGenerator) {
     }
 
     function init(worldConstraints, blocks) {
-        var initialBlock;
+        var initialMapSize = worldConstraints.getInitialMapSize();
+        var bounds = worldConstraints.getBounds();
+        var mapCenter = worldConstraints.getMapCenter();
+        var mapCenterBlock;
         var initialBounds;
 
-        instanceProps.mapManager = new MapManager(worldConstraints.initialMapSize, worldConstraints.maxMapSize);
+        instanceProps.mapManager = new MapManager(initialMapSize, bounds);
         instanceProps.mapStatus = new MapStatus();
         instanceProps.worldConstraints = worldConstraints;
         instanceProps.blocksMap = utils.createMapUsingCallback(blocks, function resolveId(b) {
             return b.getId();
         });
 
-        if (worldConstraints.initialBlock) {
-            initialBlock = instanceProps.blocksMap[worldConstraints.initialBlock];
-            if (!initialBlock) {
-                throw new Error('Initial block is invalid');
+        if (mapCenter) {
+            mapCenterBlock = instanceProps.blocksMap[mapCenter];
+            if (!mapCenterBlock) {
+                throw new Error('Invalid mapCenter');
             }
-            instanceProps.mapManager.set(0, 0, initialBlock);
-            instanceProps.mapStatus.addBlock(initialBlock.getId());
+            instanceProps.mapManager.set(0, 0, mapCenterBlock);
+            instanceProps.mapStatus.addBlock(mapCenterBlock.getId());
         }
 
         // generate initial map

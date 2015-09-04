@@ -4,5 +4,9 @@
             "blacklist": "blacklist",
             "whitelist": "whitelist"
         }
+    },
+    "errorMessages": {
+        "worldAlreadyStarted": "World instance already started",
+        "worldNotStarted": "World instance not started"
     }
 }

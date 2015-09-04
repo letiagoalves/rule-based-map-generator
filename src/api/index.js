@@ -3,8 +3,8 @@
 var Block = require('./../block');
 var Connector = require('./../connector');
 var World = require('./../world');
-//var WorldConstraints = require('./../world/world-constraints.js');
-var strategies = require('./../strategies/index.js');
+var WorldConstraints = require('./../world-constraints');
+var strategies = require('./../strategies');
 
 function getStrategyFactory(strategyName) {
     if (strategies.hasOwnProperty(strategyName)) {
@@ -23,25 +23,16 @@ function createBlockFactory(sidesTemplate) {
     };
 }
 
-/*
-function instantiateWorldConstraintsFromConfiguration (config) {
-    return new WorldConstraints(config.initialMapSize, {
-        maxMapSize: config.maxMapSize,
-        initialBlock: config.initialBlock
-    });
-}*/
+function createWorldConstraintsFromConfiguration (config) {
+    var maxMapSize = config.maxMapSize || null;
+    var mapCenter = config.mapCenter || null;
+    return new WorldConstraints(config.initialMapSize, maxMapSize, mapCenter);
+}
 
-/**
- * @function createWorld
- * @param  {[type]} strategy [description]
- * @return {[type]}          [description]
- */
-// TODO: change constraitns to worldConstraints
 function createWorldInstance(strategy, constraints, blocks) {
-    // TODO:
-    //var worldConstraints = instantiateWorldConstraintsFromConfiguration(constraints);
+    var worldConstraints = createWorldConstraintsFromConfiguration(constraints);
 
-    return new World(strategy, constraints, blocks);
+    return new World(strategy, worldConstraints, blocks);
 }
 
 module.exports = {

@@ -81,6 +81,7 @@ function MapManager(initialSize, maxMapSize) {
         }
 
         if (quadrantsHelper.isQ2(x, y)) {
+            console.log(x, y, value);
             return map.q2.set(row, Math.abs(col) - 1, value);
         }
 

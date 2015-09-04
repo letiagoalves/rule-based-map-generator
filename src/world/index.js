@@ -1,45 +1,52 @@
 'use strict';
 
+var Joi = require('joi');
+
 var validator = require('./../validator');
 var schema = require('./schema');
+var CONSTANTS = require('./../constants.json');
 
 function World(strategy, constraints, blocks) {
     var started = false;
 
-    // TODO: assert strategy
-    // TODO. assert constraints
+    strategy = validator.assert(strategy, schema.strategy, 'World.strategy');
+    constraints = validator.assert(constraints, schema.constraints, 'World.constraints');
     blocks = validator.assert(blocks, schema.blocks, 'World.blocks');
 
     function start() {
         if (started) {
-            // TODO:
-            throw new Error('temp, already started');
+            throw new Error(CONSTANTS.errorMessages.worldAlreadyStarted);
         }
         started = true;
         return strategy.init(constraints, blocks);
     }
 
     function getPartialMap(minX, minY, maxX, maxY) {
+        var coordinateSchema = Joi.number().integer().required();
+
+        validator.assert(minX, coordinateSchema, 'minX');
+        validator.assert(minY, coordinateSchema, 'minY');
+        validator.assert(maxX, coordinateSchema, 'maxX');
+        validator.assert(maxY, coordinateSchema, 'maxY');
+
         if (!started) {
-            // TODO:
-            throw new Error('temp');
+            throw new Error(CONSTANTS.errorMessages.worldNotStarted);
         }
-        //TODO: assertions
+
         return strategy.getPartialMap(minX, minY, maxX, maxY);
     }
 
     function getMap() {
         if (!started) {
-            // TODO:
-            throw new Error('temp');
+            throw new Error(CONSTANTS.errorMessages.worldNotStarted);
         }
         return strategy.getMap();
     }
 
     function invalidate() {
+        // TODO: implement invalidation feature
         if (!started) {
-            // TODO:
-            throw new Error('temp');
+            throw new Error(CONSTANTS.errorMessages.worldNotStarted);
         }
     }
 
