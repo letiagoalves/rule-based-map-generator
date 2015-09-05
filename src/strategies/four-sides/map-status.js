@@ -1,6 +1,7 @@
 'use strict';
 
 var objectReduce = require('mout/object/reduce');
+var isString = require('mout/lang/isString');
 
 function sum(a, b) {
     return a + b;
@@ -10,19 +11,17 @@ function MapStatus() {
     var blocksCount = {};
 
     function addBlock(blockId) {
-        // TODO: assert is string
-        if (typeof blockId !== 'string') {
-            console.error('blockId', blockId);
-            throw new Error('temp error _ not a string');
+        if (!isString(blockId) || blockId.length === 0) {
+            throw new Error('blockId is mandatory and must be a non-empty {String}');
         }
-        blocksCount[blockId] = blocksCount[blockId] || 0;
 
+        blocksCount[blockId] = blocksCount[blockId] || 0; // initialize counter if not already initialized
         blocksCount[blockId]++;
     }
 
     function removeBlock(blockId) {
-        if (!blocksCount[blockId]) {
-            throw new Error('trying to remove unexisting block');
+        if (!blocksCount.hasOwnProperty(blockId)) {
+            throw new Error('Cannot remove unexisting block');
         }
 
         blocksCount[blockId]--;
@@ -38,7 +37,6 @@ function MapStatus() {
 
     function getBlockOccupationPercentage(blockId) {
         var occupation = getBlockOccupation(blockId);
-        // TODO: maybe replace with map size?!
         var total = getNumberOfTotalBlocks();
 
         return total > 0 ? (occupation / total) * 100 : 0;
