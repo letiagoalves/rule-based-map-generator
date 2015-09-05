@@ -5,8 +5,12 @@ var objectForOwn = require('mout/object/forOwn');
 var objectEvery = require('mout/object/every');
 var objectSome = require('mout/object/some');
 var isString = require('mout/lang/isString');
+var isArray = require('mout/lang/isArray');
+var isObject = require('mout/lang/isObject');
 var isNull = require('mout/lang/isNull');
+var isEmpty = require('mout/lang/isEmpty');
 var clone = require('mout/lang/clone');
+
 var myUtils = require('./../../../utils/utils.js');
 var CONSTANTS = require('./../../../constants.json');
 
@@ -18,8 +22,8 @@ var SIDES_RELATION = {
 };
 
 function connectorIsCompatibleWithBlockId(connector, blockId) {
-    //console.log('connector', connector.getType(), connector.getBlockIds(), ' ->', blockId);
     var blockIds = connector.getBlockIds();
+
     switch (connector.getType()) {
         case CONSTANTS.connector.type.blacklist:
             return blockIds.indexOf(blockId) === -1;
@@ -34,18 +38,16 @@ function filterCandidatesByItsConnectors(candidates, neighbours, blocksMap) {
     return candidates.filter(function allConnectorsAreCompatibleWithNeighbours(id) {
         var blockConnectors = blocksMap[id].getSides();
         return objectEvery(blockConnectors, function isCompatibleWithNeighbour(connector, side) {
-            //console.log(id, side, 'hasNeighbour', isString(neighbours[side]));
-
             // when there is no neighbour, it is compatible
             if (!isString(neighbours[side])) {
                 return true;
             }
-            //console.log(id, side, 'hasConnector', !!connector);
+
             // if a side does not have a connector, the block is invalid if the neighbour already exists
             if (!connector) {
                 return false;
             }
-            //console.log(id, side, 'isCompatible with', neighbours[side], connectorIsCompatibleWithBlockId(connector, neighbours[side]));
+
             return connectorIsCompatibleWithBlockId(connector, neighbours[side]);
         });
     });
@@ -88,12 +90,21 @@ function filterCandidatesByItsNeighbourConnectors(candidates, neighbours, blocks
     return candidates;
 }
 
-// TODO: assert neighbours have all SIDE PROPERTIES
 function applyBlackAndWhiteLists(candidates, neighbours, blocksMap) {
+    if (!isArray(candidates) || isEmpty(candidates)) {
+        throw new Error('candidates is mandatory and must be a non-empty {Array}');
+    }
+
+    if (!isObject(neighbours) || isEmpty(neighbours)) {
+        throw new Error('neighbours is mandatory and must be a object {Array} with enumerable properties');
+    }
+
+    if (!isObject(blocksMap) || isEmpty(blocksMap)) {
+        throw new Error('blocksMap is mandatory and must be a object {Array} with enumerable properties');
+    }
+
     candidates = clone(candidates);
-    //console.log('candidates 1', candidates);
     candidates = filterCandidatesByItsConnectors(candidates, neighbours, blocksMap);
-    //console.log('candidates 2', candidates);
     candidates = filterCandidatesByItsNeighbourConnectors(candidates, neighbours, blocksMap);
 
     return candidates;
