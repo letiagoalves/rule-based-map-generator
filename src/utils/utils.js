@@ -29,6 +29,10 @@ function applyBlackList(victim, blacklist) {
     return arrayDifference(victim, blacklist);
 }
 
+// helps in unit testing to pass through instanceof checks
+function isInstanceOf(victim, constructor) {
+    return victim instanceof constructor;
+}
 
 function writeJSONfile(outputFilename, obj) {
     fs.writeFile(outputFilename, JSON.stringify(obj, null, 4), function (err) {
@@ -80,6 +84,7 @@ module.exports = {
     createMapUsingCallback: createMapUsingCallback,
     applyWhitelist: applyWhitelist,
     applyBlackList: applyBlackList,
+    isInstanceOf: isInstanceOf,
     writeJSONfile: writeJSONfile,
     logTable: logTable,
     saveMap: saveMap

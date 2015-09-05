@@ -1,17 +1,41 @@
 'use strict';
 
 var Matrix = require('functional-matrix');
-var Joi = require('joi');
 var chalk = require('chalk');
+var isInteger = require('mout/lang/isInteger');
+var isObject = require('mout/lang/isObject');
 
 var quadrantsHelper = require('./quadrants-helper.js');
-var validator = require('./../../validator');
 var Block = require('./../../block');
+var utils = require('./../../utils/utils.js');
+
+function isValidMaxMapSize(maxMapSize) {
+    if (!isObject(maxMapSize)) {
+        return false;
+    }
+
+    if (!isInteger(maxMapSize.horizontal) || maxMapSize.horizontal < 2) {
+        return false;
+    }
+
+    if (!isInteger(maxMapSize.vertical) || maxMapSize.vertical < 2) {
+        return false;
+    }
+
+    return true;
+}
 
 function MapManager(initialSize, maxMapSize) {
-    // TODO: assert arguments
     var map;
     var bounds;
+
+    if (!isInteger(initialSize) || initialSize < 2) {
+        throw new Error('initialSize is mandatory and must be a positive integer greater than 1');
+    }
+
+    if (maxMapSize && !isValidMaxMapSize(maxMapSize)) {
+        throw new Error('maxMapSize must be an object with horizontal and vertical integer values greater than 1');
+    }
 
     function buildMap(mapInitialSize) {
         var adjustValue = mapInitialSize % 2 === 0 ? 0 : 1;
@@ -45,11 +69,41 @@ function MapManager(initialSize, maxMapSize) {
         };
     }
 
-    function get(x, y) {
-        var row = y;
-        var col = x;
+    function isPositionInsideMapBounds(x, y) {
+        if (!bounds) {
+            return true;
+        }
 
-        // TODO: assert integers and inside bounds
+        return x >= bounds.minX && x <= bounds.maxX &&
+               y >= bounds.minY && y <= bounds.maxY;
+    }
+
+    function isInsideMapBounds(minX, minY, maxX, maxY) {
+        if (!bounds) {
+            return true;
+        }
+
+        return minX >= bounds.minX && minY >= bounds.minY &&
+               maxX <= bounds.maxX && maxY <= bounds.maxY;
+    }
+
+    function get(x, y) {
+        var row, col;
+
+        if (!isInteger(x)) {
+            throw new Error('x is mandatory and must be an Integer');
+        }
+        if (!isInteger(y)) {
+            throw new Error('y is mandatory and must be an Integer');
+        }
+
+        if (!isPositionInsideMapBounds(x, y)) {
+            throw new Error('x and y must be inside map bounds');
+        }
+
+        // just for readibility purposes
+        row = y; col = x;
+
         if (quadrantsHelper.isQ1(x, y)) {
             return map.q1.get(row, col);
         }
@@ -66,22 +120,36 @@ function MapManager(initialSize, maxMapSize) {
             return map.q4.get(Math.abs(row) - 1, col);
         }
 
-        throw new Error('cannot get');
+        throw new Error('Cannot get at position ({x}, {y})'.replace('{x}', x).replace('{y}', y));
     }
 
     function set(x, y, value) {
-        var row = y;
-        var col = x;
+        var row, col;
 
-        // TODO: assert integers and value
-        validator.assert(value, Joi.object().type(Block).required().allow(null), 'value must be a Block');
+        if (!isInteger(x)) {
+            throw new Error('x is mandatory and must be an Integer');
+        }
+        if (!isInteger(y)) {
+            throw new Error('y is mandatory and must be an Integer');
+        }
+
+        if (!isPositionInsideMapBounds(x, y)) {
+            throw new Error('x and y must be inside map bounds');
+        }
+
+        // assert value is a Block or null
+        if (value !== null && !utils.isInstanceOf(value, Block)) {
+            throw new Error('value must be a {Block} instance or {null}');
+        }
+
+        // just for readibility purposes
+        row = y; col = x;
 
         if (quadrantsHelper.isQ1(x, y)) {
             return map.q1.set(row, col, value);
         }
 
         if (quadrantsHelper.isQ2(x, y)) {
-            console.log(x, y, value);
             return map.q2.set(row, Math.abs(col) - 1, value);
         }
 
@@ -93,7 +161,7 @@ function MapManager(initialSize, maxMapSize) {
             return map.q4.set(Math.abs(row) - 1, col, value);
         }
 
-        throw new Error('cannot set');
+        throw new Error('Cannot set at position ({x}, {y})'.replace('{x}', x).replace('{y}', y));
     }
 
     function getQ1Limit() {
@@ -124,7 +192,6 @@ function MapManager(initialSize, maxMapSize) {
         };
     }
 
-    // TODO: REMOVE THIS. Bounds cannot be calculated this way. Instead create getQ1Bounds/getQ2Bounds/getQ3Bounds/
     function getWrappedBounds() {
         var q1Limit = getQ1Limit();
         var q2Limit = getQ2Limit();
@@ -139,32 +206,30 @@ function MapManager(initialSize, maxMapSize) {
         };
     }
 
-    // TODO: documentation
     function getPartialMap(minX, minY, maxX, maxY) {
-        // TODO: assert is inside map bounds
-        var xSize = Math.abs(maxX - minX) + 1;
-        var ySize = Math.abs(maxY - minY) + 1;
-        var subMapMatrix = new Matrix(xSize, ySize, function fillFunction (row, col) {
+        var xSize, ySize;
+        var subMapMatrix;
+
+        if (minX >= maxX || minY >= maxY) {
+            throw new Error('minX and minY must be less than maxX and maxY respectively');
+        }
+
+        if (!isInsideMapBounds(minX, minY, maxX, maxY)) {
+            throw new Error('Cannot get partial map because is not inside map bounds');
+        }
+
+        xSize = Math.abs(maxX - minX) + 1;
+        ySize = Math.abs(maxY - minY) + 1;
+        subMapMatrix = new Matrix(xSize, ySize, function fillFunction (row, col) {
             return get(row + minX, col + minY);
         });
 
         return subMapMatrix.rotateCCW().to2dArray();
     }
 
-    // TODO: documentation
     function getMap() {
-        // TODO: assert is inside map bounds
         var wrappedBounds = getWrappedBounds();
         return getPartialMap(wrappedBounds.minX, wrappedBounds.minY, wrappedBounds.maxX, wrappedBounds.maxY);
-    }
-
-    function isInsideMapBounds(minX, minY, maxX, maxY) {
-        if (!bounds) {
-            return true;
-        }
-
-        return minX >= bounds.minX && minY >= bounds.minY &&
-               maxX <= bounds.maxX && maxY <= bounds.maxY;
     }
 
     function isInsideMapWrappedBounds(minX, minY, maxX, maxY) {
@@ -174,8 +239,6 @@ function MapManager(initialSize, maxMapSize) {
     }
 
     function expandMapQ1(maxX, maxY) {
-        // TODO: assert maxX and maxY are Q1
-
         var i;
         var q1Limit = getQ1Limit();
         var missingColumns = maxX - q1Limit.x;
@@ -191,8 +254,6 @@ function MapManager(initialSize, maxMapSize) {
     }
 
     function expandMapQ2(minX, maxY) {
-        // TODO: assert maxX and maxY are Q2
-
         var i;
         var q2Limit = getQ2Limit();
         var missingColumns = q2Limit.x - minX;
@@ -208,8 +269,6 @@ function MapManager(initialSize, maxMapSize) {
     }
 
     function expandMapQ3(minX, minY) {
-        // TODO: assert minX and maxY are Q3
-
         var i;
         var q3Limit = getQ3Limit();
         var missingColumns = q3Limit.x - minX;
@@ -225,8 +284,6 @@ function MapManager(initialSize, maxMapSize) {
     }
 
     function expandMapQ4(maxX, minY) {
-        // TODO: assert maxX and maxY are Q3
-
         var i;
         var q4Limit = getQ4Limit();
         var missingColumns = maxX - q4Limit.x;
@@ -246,18 +303,27 @@ function MapManager(initialSize, maxMapSize) {
             throw new Error('Cannot expand outside map bounds');
         }
 
-        console.info(chalk.green('Start expansion'));
-        expandMapQ1(maxX, maxY);
-        expandMapQ2(minX, maxY);
-        expandMapQ3(minX, minY);
-        expandMapQ4(maxX, minY);
-        console.info(chalk.green('End expansion'));
+        console.info(chalk.green('Start expansion for ', minX, minY, maxX, maxY));
+        if (quadrantsHelper.isQ1(maxX, maxY)) {
+            expandMapQ1(maxX, maxY);
+        }
+        if (quadrantsHelper.isQ2(minX, maxY)) {
+            expandMapQ2(minX, maxY);
+        }
+        if (quadrantsHelper.isQ3(minX, minY)) {
+            expandMapQ3(minX, minY);
+        }
+        if (quadrantsHelper.isQ4(maxX, minY)) {
+            expandMapQ4(maxX, minY);
+        }
+        console.info(chalk.green('End expansion for ', minX, minY, maxX, maxY));
     }
 
     // init
     map = buildMap(initialSize);
     bounds = maxMapSize ? buildBounds(maxMapSize.horizontal, maxMapSize.vertical) : null;
 
+    // TODO: document all public functions
     // public
     this.getWrappedBounds = getWrappedBounds;
     this.getPartialMap = getPartialMap;
