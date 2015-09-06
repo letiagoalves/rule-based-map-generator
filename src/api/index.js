@@ -5,6 +5,8 @@ var Connector = require('./../connector');
 var World = require('./../world');
 var WorldConstraints = require('./../world-constraints');
 var strategies = require('./../strategies');
+var Strategy = require('./../strategies/strategy.js');
+var utils = require('./../utils/utils.js');
 
 function getStrategyFactory(strategyName) {
     if (strategies.hasOwnProperty(strategyName)) {
@@ -17,9 +19,13 @@ function createConnectorInstance(id, type, blockIds, blockClasses) {
     return new Connector(id, type, blockIds, blockClasses);
 }
 
-function createBlockFactory(sidesTemplate) {
+function createBlockFactory(strategy) {
+    if (!utils.isInstanceOf(strategy, Strategy)) {
+        throw new Error('strategy is mandatory and must be a valid strategy');
+    }
+
     return function createBlockInstance (id, classes, constraints) {
-        return new Block(id, sidesTemplate, classes, constraints);
+        return new Block(strategy, id, classes, constraints);
     };
 }
 
@@ -30,6 +36,8 @@ function createWorldConstraintsFromConfiguration (config) {
 }
 
 function createWorldInstance(strategy, constraints, blocks) {
+    // TODO: assert strategy, constraints and blocks
+
     var worldConstraints = createWorldConstraintsFromConfiguration(constraints);
 
     return new World(strategy, worldConstraints, blocks);

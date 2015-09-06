@@ -36,7 +36,7 @@ function parse(config) {
     strategy = new Strategy(strategyImplementation);
 
     // create block
-    blockFactory = api.createBlockFactory(strategyFactory.sidesTemplate);
+    blockFactory = api.createBlockFactory(strategy);
 
     blocks = config.blocks.map(function mapToBlockInstance(block) {
         return blockFactory(block.id, block.classes, block.constraints);

@@ -51,8 +51,6 @@ function useMinimumDistanceRule(candidates, blocksMap, position, getPartialMapFn
     // remove null values
     minimumDistancesByBlockId = objectFilter(minimumDistancesByBlockId, isNotNull);
 
-    console.log('minimunDistance', minimumDistancesByBlockId);
-
     return applyMinimumDistance(candidates, minimumDistancesByBlockId, position, getPartialMapFn);
 }
 
@@ -62,7 +60,7 @@ function selectBlock(neighbours, blocksMap, mapStatus, position, getPartialMapFn
     var randomItemPosition;
     var candidates = Object.keys(blocksMap);
 
-    console.log('candidates before', candidates);
+    console.info('candidates before', candidates);
     // TODO: create a method to transverse all rules and stop when no candidates are left
     candidates = useBlackAndWhiteListsRule(candidates, neighbours, blocksMap);
     //console.log('candidates after blacklist', candidates);
@@ -71,7 +69,7 @@ function selectBlock(neighbours, blocksMap, mapStatus, position, getPartialMapFn
     candidates = useMaxOccupationPercentageRule(candidates, blocksMap, mapStatus);
     //console.log('candidates after minimun distance', candidates);
     candidates = useMinimumDistanceRule(candidates, blocksMap, position, getPartialMapFn);
-    console.log('candidates after max occupation percentage', candidates);
+    console.log('candidates info', candidates);
 
     if (candidates.length === 1) {
         return candidates[0];

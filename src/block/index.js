@@ -4,6 +4,7 @@
 var validator = require('./../validator');
 var schema = require('./schema');
 var Connector = require('./../connector');
+var myUtils = require('./../utils/utils.js');
 
 function createSidesFromTemplate(template) {
     var sides = {};
@@ -13,15 +14,19 @@ function createSidesFromTemplate(template) {
     return sides;
 }
 
-function Block(id, sidesTemplate, classes, constraints) {
+// TODO: avoid passing strategy to Block through constructor. World should be responsible to pass it when adding blocks to the world.
+function Block(strategy, id, classes, constraints) {
+    var sidesTemplate;
     var sides;
 
     // schema assertions
-    id = validator.assert(id, schema.id, 'Block id');
-    sidesTemplate = validator.assert(sidesTemplate, schema.sidesTemplate, 'Sides template');
-    classes = validator.assert(classes, schema.classes, 'Block classes');
-    constraints = validator.assert(constraints, schema.constraints, 'Block constraints');
+    strategy = validator.assert(strategy, schema.strategy, 'Block.strategy');
+    id = validator.assert(id, schema.id, 'Block.id');
+    classes = validator.assert(classes, schema.classes, 'Block.classes');
+    // TODO: BlockConstraints
+    constraints = validator.assert(constraints, schema.constraints, 'Block.constraints');
 
+    sidesTemplate = strategy.getSidesTemplate();
     sides = createSidesFromTemplate(sidesTemplate);
 
     function getId() {
@@ -54,8 +59,7 @@ function Block(id, sidesTemplate, classes, constraints) {
      * @param {Connector}   connector Connector
      */
     function setSideConnector(side, connector) {
-        // TODO: assert is valid size, and connector is type connector or null
-        if (connector !== null && !(connector instanceof Connector)) {
+        if (connector !== null && !myUtils.isInstanceOf(connector, Connector)) {
             throw new Error('Invalid connector');
         }
 
@@ -66,7 +70,7 @@ function Block(id, sidesTemplate, classes, constraints) {
     }
 
     function toString() {
-        return '{Block} {id}'.replace('{id}', this.getId());
+        return '{Block} {id}'.replace('{id}', id);
     }
 
     // public

@@ -1,6 +1,8 @@
 'use strict';
 
 var chalk = require('chalk');
+var deepClone = require('mout/lang/deepClone');
+
 var MapManager = require('./map-manager.js');
 var MapStatus = require('./map-status.js');
 var mapGenerator = require('./map-generator.js');
@@ -8,7 +10,6 @@ var quadrantsHelper = require('./quadrants-helper.js');
 var Block = require('./../../block');
 var utils = require('./../../utils/utils.js');
 
-var name = 'Four sides block strategy';
 var sidesTemplate = ['UP', 'RIGHT', 'BOTTOM', 'LEFT'];
 
 function adaptMapMatrix(matrix, minX, maxY) {
@@ -314,8 +315,13 @@ function createInstance(randomMatrixGenerator) {
         generate(initialBounds.minX, initialBounds.minY, initialBounds.maxX, initialBounds.maxY);
     }
 
+    function getSidesTemplate() {
+        return deepClone(sidesTemplate);
+    }
+
     // public
     return {
+        getSidesTemplate: getSidesTemplate,
         init: init,
         getAtPosition: getAtPosition,
         getPartialMap: getPartialMap,
@@ -324,7 +330,5 @@ function createInstance(randomMatrixGenerator) {
 }
 
 module.exports = {
-    name: name,
-    sidesTemplate: sidesTemplate,
     createInstance: createInstance
 };

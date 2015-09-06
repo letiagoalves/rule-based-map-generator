@@ -5,13 +5,14 @@ var Joi = require('joi');
 var validator = require('./../validator');
 
 var interfaceSchema = Joi.object().keys({
+    getSidesTemplate: Joi.func().required(),
     init: Joi.func().required(),
     getAtPosition: Joi.func().required(),
     getPartialMap: Joi.func().required(),
     getMap: Joi.func().required()
 }).required();
 
-var interfaceDeclaration = ['init', 'getAtPosition', 'getPartialMap', 'getMap'];
+var interfaceDeclaration = ['getSidesTemplate', 'init', 'getAtPosition', 'getPartialMap', 'getMap'];
 
 function Strategy(interfaceImplementation) {
     var that = this;
