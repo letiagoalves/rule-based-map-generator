@@ -84,6 +84,10 @@ function createInstance(randomMatrixGenerator) {
         );
         var block = blockId && instanceProps.blocksMap[blockId];
         console.log(chalk.red('generateAtPosition (%s, %s) - %s'), x, y, blockId);
+
+        // TODO: unit test this
+        // make sure we expand the map to the position we will set the block
+        instanceProps.mapManager.expandToPosition(x, y);
         instanceProps.mapManager.set(x, y, block);
 
         if (blockId !== null) {
@@ -262,11 +266,6 @@ function createInstance(randomMatrixGenerator) {
 
         if (!instanceProps.mapManager.isInsideMapBounds(minX, minY, maxX, maxY)) {
             throw new Error('Request map is outside map bounds');
-        }
-
-        // expand if necessary
-        if (!instanceProps.mapManager.isInsideMapWrappedBounds(minX, minY, maxX, maxY)) {
-            instanceProps.mapManager.expandMap(minX, minY, maxX, maxY);
         }
 
         partialMap = instanceProps.mapManager.getPartialMap(minX, minY, maxX, maxY);

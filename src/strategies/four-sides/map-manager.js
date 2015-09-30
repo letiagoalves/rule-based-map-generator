@@ -232,12 +232,6 @@ function MapManager(initialSize, maxMapSize) {
         return getPartialMap(wrappedBounds.minX, wrappedBounds.minY, wrappedBounds.maxX, wrappedBounds.maxY);
     }
 
-    function isInsideMapWrappedBounds(minX, minY, maxX, maxY) {
-        var wrappedBounds = getWrappedBounds();
-        return minX >= wrappedBounds.minX && minY >= wrappedBounds.minY &&
-               maxX <= wrappedBounds.maxX && maxY <= wrappedBounds.maxY;
-    }
-
     function expandMapQ1(maxX, maxY) {
         var i;
         var q1Limit = getQ1Limit();
@@ -298,25 +292,25 @@ function MapManager(initialSize, maxMapSize) {
         }
     }
 
-    function expandMap(minX, minY, maxX, maxY) {
-        if (!isInsideMapBounds(minX, minY, maxX, maxY)) {
+    function expandToPosition(x, y) {
+        if (!isPositionInsideMapBounds(x, y)) {
             throw new Error('Cannot expand outside map bounds');
         }
 
-        console.info(chalk.green('Start expansion for ', minX, minY, maxX, maxY));
-        if (quadrantsHelper.isQ1(maxX, maxY)) {
-            expandMapQ1(maxX, maxY);
+        console.info(chalk.green('Start expansion for ', x, y));
+        if (quadrantsHelper.isQ1(x, y)) {
+            expandMapQ1(x, y);
         }
-        if (quadrantsHelper.isQ2(minX, maxY)) {
-            expandMapQ2(minX, maxY);
+        if (quadrantsHelper.isQ2(x, y)) {
+            expandMapQ2(x, y);
         }
-        if (quadrantsHelper.isQ3(minX, minY)) {
-            expandMapQ3(minX, minY);
+        if (quadrantsHelper.isQ3(x, y)) {
+            expandMapQ3(x, y);
         }
-        if (quadrantsHelper.isQ4(maxX, minY)) {
-            expandMapQ4(maxX, minY);
+        if (quadrantsHelper.isQ4(x, y)) {
+            expandMapQ4(x, y);
         }
-        console.info(chalk.green('End expansion for ', minX, minY, maxX, maxY));
+        console.info(chalk.green('End expansion for ', x, y));
     }
 
     // init
@@ -329,8 +323,7 @@ function MapManager(initialSize, maxMapSize) {
     this.getPartialMap = getPartialMap;
     this.getMap = getMap;
     this.isInsideMapBounds = isInsideMapBounds;
-    this.isInsideMapWrappedBounds = isInsideMapWrappedBounds;
-    this.expandMap = expandMap;
+    this.expandToPosition = expandToPosition;
     this.get = get;
     this.set = set;
 }

@@ -6,8 +6,6 @@ function applyMaxOccupationPercentage (candidates, blocksMaxOccupationPercentage
         if (!blocksMaxOccupationPercentage.hasOwnProperty(blockId)) {
             return true;
         }
-        console.log('percentage of ', blockId, mapStatus.getBlockOccupationPercentage(blockId) < blocksMaxOccupationPercentage[blockId],
-        mapStatus.getBlockOccupation(blockId), mapStatus.getNumberOfTotalBlocks());
         return mapStatus.getBlockOccupationPercentage(blockId) < blocksMaxOccupationPercentage[blockId];
     });
 }
