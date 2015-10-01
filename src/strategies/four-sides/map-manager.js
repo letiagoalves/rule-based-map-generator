@@ -69,6 +69,10 @@ function MapManager(initialSize, maxMapSize) {
         };
     }
 
+    function getBounds() {
+        return bounds;
+    }
+
     function isPositionInsideMapBounds(x, y) {
         if (!bounds) {
             return true;
@@ -328,6 +332,7 @@ function MapManager(initialSize, maxMapSize) {
 
     // TODO: document all public functions
     // public
+    this.getBounds = getBounds;
     this.getWrappedBounds = getWrappedBounds;
     this.getQuadrantLimits = getQuadrantLimits;
     this.getPartialMap = getPartialMap;

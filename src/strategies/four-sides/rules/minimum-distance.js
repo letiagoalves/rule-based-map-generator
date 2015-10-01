@@ -24,11 +24,19 @@ function mergeDistances(distances) {
     return merged;
 }
 
-function getMapAroundPosition(position, getPartialMapFn, distance) {
+function getMapAroundPosition(position, getPartialMapFn, mapBounds, distance) {
     var minX = position.x - distance;
     var minY = position.y - distance;
     var maxX = position.x + distance;
     var maxY = position.y + distance;
+
+    // limit to map bounds
+    if (mapBounds) {
+        minX = Math.max(minX, mapBounds.minX);
+        minY = Math.max(minY, mapBounds.minY);
+        maxX = Math.min(maxX, mapBounds.maxX);
+        maxY = Math.min(maxY, mapBounds.maxY);
+    }
 
     return getPartialMapFn(minX, minY, maxX, maxY);
 }
@@ -44,14 +52,14 @@ function mapContainsBlockId(map, blockId) {
     });
 }
 
-function passEveryDistance(blockDistances, position, getPartialMapFn) {
+function passEveryDistance(blockDistances, position, getPartialMapFn, mapBounds) {
     return objectEvery(blockDistances, function passDistance(otherBlockDistance, otherBlockId) {
-        var map = getMapAroundPosition(position, getPartialMapFn, otherBlockDistance);
+        var map = getMapAroundPosition(position, getPartialMapFn, mapBounds, otherBlockDistance);
         return !mapContainsBlockId(map, otherBlockId);
     });
 }
 
-function applyMinimumDistance(candidates, distances, position, getPartialMapFn) {
+function applyMinimumDistance(candidates, distances, position, getPartialMapFn, mapBounds) {
     distances = mergeDistances(distances);
 
     return candidates.filter(function respectsMinimumDistances(blockId) {
@@ -62,7 +70,7 @@ function applyMinimumDistance(candidates, distances, position, getPartialMapFn) 
         }
 
         blockDistances = distances[blockId];
-        return passEveryDistance(blockDistances, position, getPartialMapFn);
+        return passEveryDistance(blockDistances, position, getPartialMapFn, mapBounds);
     });
 }
 

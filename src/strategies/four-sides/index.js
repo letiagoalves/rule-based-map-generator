@@ -74,12 +74,14 @@ function createInstance(randomMatrixGenerator) {
     function generateAtPosition(x, y) {
         var neighbours = buildNeighbours(x, y);
         var randomValueForPosition = randomMatrixGenerator.rand(x, y);
+        var mapBounds = instanceProps.mapManager.getBounds();
         var blockId = mapGenerator.selectBlock(
             neighbours,
             instanceProps.blocksMap,
             instanceProps.mapStatus,
             { x: x, y: y },
             instanceProps.mapManager.getPartialMap,
+            mapBounds,
             randomValueForPosition
         );
         var block = blockId && instanceProps.blocksMap[blockId];

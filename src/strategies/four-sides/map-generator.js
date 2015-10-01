@@ -43,7 +43,7 @@ function useMaxOccupationPercentageRule(candidates, blocksMap, mapStatus) {
     return applyMaxOccupationPercentage(candidates, blocksMaxOccupationPercentage, mapStatus);
 }
 
-function useMinimumDistanceRule(candidates, blocksMap, position, getPartialMapFn) {
+function useMinimumDistanceRule(candidates, blocksMap, position, getPartialMapFn, mapBounds) {
     var minimumDistancesByBlockId = objectMap(blocksMap, function extractContraint(block) {
         return block.getMinimumDistancesToOtherBlocks();
     });
@@ -51,10 +51,10 @@ function useMinimumDistanceRule(candidates, blocksMap, position, getPartialMapFn
     // remove null values
     minimumDistancesByBlockId = objectFilter(minimumDistancesByBlockId, isNotNull);
 
-    return applyMinimumDistance(candidates, minimumDistancesByBlockId, position, getPartialMapFn);
+    return applyMinimumDistance(candidates, minimumDistancesByBlockId, position, getPartialMapFn, mapBounds);
 }
 
-function selectBlock(neighbours, blocksMap, mapStatus, position, getPartialMapFn, randomValue) {
+function selectBlock(neighbours, blocksMap, mapStatus, position, getPartialMapFn, mapBounds, randomValue) {
     // TODO: assert arguments
     // randomValue between 0 and 1
     var randomItemPosition;
@@ -67,7 +67,7 @@ function selectBlock(neighbours, blocksMap, mapStatus, position, getPartialMapFn
     //console.log('candidates after max occupation', candidates);
     candidates = useMaxOccupationPercentageRule(candidates, blocksMap, mapStatus);
     //console.log('candidates after minimun distance', candidates);
-    candidates = useMinimumDistanceRule(candidates, blocksMap, position, getPartialMapFn);
+    candidates = useMinimumDistanceRule(candidates, blocksMap, position, getPartialMapFn, mapBounds);
 
     if (candidates.length === 1) {
         return candidates[0];
