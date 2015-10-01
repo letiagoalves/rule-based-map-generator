@@ -192,6 +192,15 @@ function MapManager(initialSize, maxMapSize) {
         };
     }
 
+    function getQuadrantLimits() {
+        return {
+            q1: getQ1Limit(),
+            q2: getQ2Limit(),
+            q3: getQ3Limit(),
+            q4: getQ4Limit()
+        };
+    }
+
     function getWrappedBounds() {
         var q1Limit = getQ1Limit();
         var q2Limit = getQ2Limit();
@@ -320,6 +329,7 @@ function MapManager(initialSize, maxMapSize) {
     // TODO: document all public functions
     // public
     this.getWrappedBounds = getWrappedBounds;
+    this.getQuadrantLimits = getQuadrantLimits;
     this.getPartialMap = getPartialMap;
     this.getMap = getMap;
     this.isInsideMapBounds = isInsideMapBounds;
