@@ -6,6 +6,7 @@ var randomMatrix = require('random-matrix');
 var api = require('./../src/api');
 var Strategy = require('./../src/strategies/strategy.js');
 var myUtils = require('./../src/utils/utils.js');
+var WorldConstraints = require('./../src/world-constraints');
 
 var seed, randomMatrixGenerator;
 var strategyFactory, strategyInstance, strategy;
@@ -40,9 +41,7 @@ connector1 = api.createConnectorInstance('C1', 'whitelist', ['B1', 'B2', 'B3']);
 });
 
 // create world
-worldConstraints = {
-    initialMapSize: 4
-};
+worldConstraints = new WorldConstraints(4);
 world = api.createWorldInstance(strategy, worldConstraints, [block1, block2, block3]);
 
 console.log(chalk.bgBlue('World start'));

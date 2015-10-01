@@ -36,11 +36,30 @@ function createWorldConstraintsFromConfiguration (config) {
 }
 
 function createWorldInstance(strategy, constraints, blocks) {
-    // TODO: assert strategy, constraints and blocks
+    var areAllBlockInstances;
 
-    var worldConstraints = createWorldConstraintsFromConfiguration(constraints);
+    if (!utils.isInstanceOf(strategy, Strategy)) {
+        throw new Error('strategy is mandatory and must be a valid strategy');
+    }
 
-    return new World(strategy, worldConstraints, blocks);
+    if (!utils.isInstanceOf(constraints, WorldConstraints)) {
+        throw new Error('constraints is mandatory and must be a valid WorldConstraints instance');
+    }
+
+    // blocks validation
+    if (!Array.isArray(blocks) || blocks.length === 0) {
+        throw new Error('blocks is mandatory and must be a non-empty array');
+    }
+
+    areAllBlockInstances = blocks.every(function isBlockInstance(item) {
+        return utils.isInstanceOf(item, Block);
+    });
+
+    if (!areAllBlockInstances) {
+        throw new Error('blocks must only contain Block instances');
+    }
+
+    return new World(strategy, constraints, blocks);
 }
 
 module.exports = {
