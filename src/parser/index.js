@@ -10,6 +10,7 @@ var schema = require('./schema.js');
 var api = require('./../api');
 var utils = require('./../utils/utils.js');
 var Strategy = require('./../strategies/strategy.js');
+var WorldConstraints = require('./../world-constraints');
 
 /**
  * Parses a world configuration and returns a world instance
@@ -26,6 +27,7 @@ function parse(config) {
     var strategyImplementation;
     var strategy;
     var randomMatrixGenerator;
+    var worldConstraints;
 
     // assertions
     config = validator.assert(config, schema.config, 'config');
@@ -67,7 +69,13 @@ function parse(config) {
         });
     });
 
-    return api.createWorldInstance(strategy, config, blocks);
+    worldConstraints = new WorldConstraints(
+        config.initialMapSize,
+        config.bounds || null,
+        config.mapCenter || null
+    );
+
+    return api.createWorldInstance(strategy, worldConstraints, blocks);
 }
 
 module.exports = {
