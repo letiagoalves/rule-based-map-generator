@@ -29,12 +29,6 @@ function createBlockFactory(strategy) {
     };
 }
 
-function createWorldConstraintsFromConfiguration (config) {
-    var maxMapSize = config.maxMapSize || null;
-    var mapCenter = config.mapCenter || null;
-    return new WorldConstraints(config.initialMapSize, maxMapSize, mapCenter);
-}
-
 function createWorldInstance(strategy, constraints, blocks) {
     var areAllBlockInstances;
 
