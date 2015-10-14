@@ -1,0 +1,94 @@
+{
+    "seed": 1337,
+    "strategy": "squareGrid",
+    "mapCenter": "VEHICLES_SPAWN",
+    "initialMapSize": 10,
+    "blocks": [{
+        "id": "FOREST",
+        "connectors": {
+            "UP": "ALLOW_ALL",
+            "RIGHT": "ALLOW_ALL",
+            "BOTTOM": "ALLOW_ALL",
+            "LEFT": "ALLOW_ALL"
+        },
+        "constraints": {}
+    }, {
+        "id": "VEHICLES_SPAWN",
+        "connectors": {
+            "UP": "ALLOW_FOREST",
+            "RIGHT": "ALLOW_FOREST",
+            "BOTTOM": "ALLOW_FOREST",
+            "LEFT": "ALLOW_FOREST"
+        },
+        "constraints": {
+            "minimumDistance": {
+                "VEHICLES_SPAWN": 10,
+                "GAS_STATION": 7
+            }
+        }
+    }, {
+        "id": "GAS_STATION",
+        "connectors": {
+            "UP": "ALLOW_FOREST",
+            "RIGHT": "ALLOW_FOREST",
+            "BOTTOM": "ALLOW_FOREST",
+            "LEFT": "ALLOW_FOREST"
+        },
+        "constraints": {
+            "minimumDistance": {
+                "GAS_STATION": 5
+            },
+            "maxOccupationPercentage": 1
+        }
+    }, {
+        "id": "WATER_WELL",
+        "connectors": {
+            "UP": "ALLOW_FOREST",
+            "RIGHT": "ALLOW_FOREST",
+            "BOTTOM": "ALLOW_FOREST",
+            "LEFT": "ALLOW_FOREST"
+        },
+        "constraints": {
+            "minimumDistance": {
+                "WATER_WELL": 4,
+                "BUILDING": 6
+            },
+            "maxOccupationPercentage": 3
+        }
+    }, {
+        "id": "POLICE_STATION",
+        "connectors": {
+            "UP": "ALLOW_FOREST",
+            "RIGHT": "ALLOW_FOREST",
+            "BOTTOM": "ALLOW_FOREST",
+            "LEFT": "ALLOW_FOREST"
+        },
+        "constraints": {
+            "minimumDistance": {
+                "POLICE_STATION": 14
+            }
+        }
+    }, {
+        "id": "BUILDING",
+        "connectors": {
+            "UP": "ALLOW_FOREST",
+            "RIGHT": "ALLOW_FOREST",
+            "BOTTOM": "ALLOW_FOREST",
+            "LEFT": "ALLOW_FOREST"
+        },
+        "constraints": {
+            "minimumDistance": {
+                "BUILDING": 5
+            }
+        }
+    }],
+    "connectors": [{
+        "id": "ALLOW_ALL",
+        "type": "whitelist",
+        "blockIds": ["FOREST", "VEHICLES_SPAWN", "GAS_STATION", "WATER_WELL", "POLICE_STATION", "BUILDING"]
+    }, {
+        "id": "ALLOW_FOREST",
+        "type": "whitelist",
+        "blockIds": ["FOREST"]
+    }]
+}
