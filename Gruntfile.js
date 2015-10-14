@@ -19,5 +19,7 @@ module.exports = function (grunt) {
         }
     });
 
-    grunt.registerTask('test', ['eslint', 'mocha_istanbul:coverage']);
+    grunt.registerTask('unit', ['mocha_istanbul:coverage']);
+
+    grunt.registerTask('test', ['eslint', 'unit']);
 };

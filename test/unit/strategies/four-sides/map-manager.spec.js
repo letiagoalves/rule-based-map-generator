@@ -4,6 +4,7 @@ var expect = require('chai').expect;
 var sinon = require('sinon');
 var MapManager = require('./../../../../src/strategies/four-sides/map-manager.js');
 var validator = require('./../../../../src/validator/');
+var utils = require('./../../../../src/utils/utils.js');
 
 describe('map-manager.js', function () {
 
@@ -36,6 +37,7 @@ describe('map-manager.js', function () {
             var mapManager = new MapManager(4);
 
             this.stub(validator, 'assert');
+            this.stub(utils, 'isInstanceOf').returns(true);
 
             mapManager.set(-2, -2, '-2:-2');
             mapManager.set(-2, 0, '-2:0');
@@ -64,6 +66,7 @@ describe('map-manager.js', function () {
             var mapManager = new MapManager(4);
 
             this.stub(validator, 'assert');
+            this.stub(utils, 'isInstanceOf').returns(true);
 
             mapManager.set(-2, -2, '-2:-2');
             mapManager.set(-2, 0, '-2:0');
@@ -85,7 +88,7 @@ describe('map-manager.js', function () {
         }));
     });
 
-    describe('expandMap', function () {
+    describe('expandToPosition', function () {
 
         describe('q1', function () {
             var victim;
@@ -95,39 +98,39 @@ describe('map-manager.js', function () {
             });
 
             it('should expand upwards', function () {
-                var mapBounds;
+                var quadrantLimits;
 
-                victim.expandMap(0, 0, 1, 2);
-                mapBounds = victim.getWrappedBounds();
+                victim.expandToPosition(0, 2);
+                quadrantLimits = victim.getQuadrantLimits();
 
-                expect(mapBounds.minX).to.be.equal(-2);
-                expect(mapBounds.minY).to.be.equal(-2);
-                expect(mapBounds.maxX).to.be.equal(1);
-                expect(mapBounds.maxY).to.be.equal(2);
+                expect(quadrantLimits.q1).to.be.deep.equal({ x: 1, y: 2 });
+                expect(quadrantLimits.q2).to.be.deep.equal({ x: -2, y: 1 });
+                expect(quadrantLimits.q3).to.be.deep.equal({ x: -2, y: -2 });
+                expect(quadrantLimits.q4).to.be.deep.equal({ x: 1, y: -2 });
             });
 
             it('should expand to the right side', function () {
-                var mapBounds;
+                var quadrantLimits;
 
-                victim.expandMap(0, 0, 2, 1);
-                mapBounds = victim.getWrappedBounds();
+                victim.expandToPosition(2, 0);
+                quadrantLimits = victim.getQuadrantLimits();
 
-                expect(mapBounds.minX).to.be.equal(-2);
-                expect(mapBounds.minY).to.be.equal(-2);
-                expect(mapBounds.maxX).to.be.equal(2);
-                expect(mapBounds.maxY).to.be.equal(1);
+                expect(quadrantLimits.q1).to.be.deep.equal({ x: 2, y: 1 });
+                expect(quadrantLimits.q2).to.be.deep.equal({ x: -2, y: 1 });
+                expect(quadrantLimits.q3).to.be.deep.equal({ x: -2, y: -2 });
+                expect(quadrantLimits.q4).to.be.deep.equal({ x: 1, y: -2 });
             });
 
             it('should expand both right and upwards', function () {
-                var mapBounds;
+                var quadrantLimits;
 
-                victim.expandMap(0, 0, 2, 2);
-                mapBounds = victim.getWrappedBounds();
+                victim.expandToPosition(2, 2);
+                quadrantLimits = victim.getQuadrantLimits();
 
-                expect(mapBounds.minX).to.be.equal(-2);
-                expect(mapBounds.minY).to.be.equal(-2);
-                expect(mapBounds.maxX).to.be.equal(2);
-                expect(mapBounds.maxY).to.be.equal(2);
+                expect(quadrantLimits.q1).to.be.deep.equal({ x: 2, y: 2 });
+                expect(quadrantLimits.q2).to.be.deep.equal({ x: -2, y: 1 });
+                expect(quadrantLimits.q3).to.be.deep.equal({ x: -2, y: -2 });
+                expect(quadrantLimits.q4).to.be.deep.equal({ x: 1, y: -2 });
             });
 
         });
@@ -140,39 +143,39 @@ describe('map-manager.js', function () {
             });
 
             it('should expand upwards', function () {
-                var mapBounds;
+                var quadrantLimits;
 
-                victim.expandMap(-2, -2, 0, 2);
-                mapBounds = victim.getWrappedBounds();
+                victim.expandToPosition(-1, 2);
+                quadrantLimits = victim.getQuadrantLimits();
 
-                expect(mapBounds.minX).to.be.equal(-2);
-                expect(mapBounds.minY).to.be.equal(-2);
-                expect(mapBounds.maxX).to.be.equal(1);
-                expect(mapBounds.maxY).to.be.equal(2);
+                expect(quadrantLimits.q1).to.be.deep.equal({ x: 1, y: 1 });
+                expect(quadrantLimits.q2).to.be.deep.equal({ x: -2, y: 2 });
+                expect(quadrantLimits.q3).to.be.deep.equal({ x: -2, y: -2 });
+                expect(quadrantLimits.q4).to.be.deep.equal({ x: 1, y: -2 });
             });
 
             it('should expand to the left side', function () {
-                var mapBounds;
+                var quadrantLimits;
 
-                victim.expandMap(-5, -2, 0, 1);
-                mapBounds = victim.getWrappedBounds();
+                victim.expandToPosition(-5, 1);
+                quadrantLimits = victim.getQuadrantLimits();
 
-                expect(mapBounds.minX).to.be.equal(-5);
-                expect(mapBounds.minY).to.be.equal(-2);
-                expect(mapBounds.maxX).to.be.equal(1);
-                expect(mapBounds.maxY).to.be.equal(1);
+                expect(quadrantLimits.q1).to.be.deep.equal({ x: 1, y: 1 });
+                expect(quadrantLimits.q2).to.be.deep.equal({ x: -5, y: 1 });
+                expect(quadrantLimits.q3).to.be.deep.equal({ x: -2, y: -2 });
+                expect(quadrantLimits.q4).to.be.deep.equal({ x: 1, y: -2 });
             });
 
             it('should expand both left and upwards', function () {
-                var mapBounds;
+                var quadrantLimits;
 
-                victim.expandMap(-7, -2, 0, 9);
-                mapBounds = victim.getWrappedBounds();
+                victim.expandToPosition(-7, 9);
+                quadrantLimits = victim.getQuadrantLimits();
 
-                expect(mapBounds.minX).to.be.equal(-7);
-                expect(mapBounds.minY).to.be.equal(-2);
-                expect(mapBounds.maxX).to.be.equal(1);
-                expect(mapBounds.maxY).to.be.equal(9);
+                expect(quadrantLimits.q1).to.be.deep.equal({ x: 1, y: 1 });
+                expect(quadrantLimits.q2).to.be.deep.equal({ x: -7, y: 9 });
+                expect(quadrantLimits.q3).to.be.deep.equal({ x: -2, y: -2 });
+                expect(quadrantLimits.q4).to.be.deep.equal({ x: 1, y: -2 });
             });
 
         });
@@ -185,39 +188,39 @@ describe('map-manager.js', function () {
             });
 
             it('should expand downwards', function () {
-                var mapBounds;
+                var quadrantLimits;
 
-                victim.expandMap(-2, -3, 1, 1);
-                mapBounds = victim.getWrappedBounds(); // TODO: shouldn't test against wrapped bounds but quadrant limits.
+                victim.expandToPosition(-1, -3);
+                quadrantLimits = victim.getQuadrantLimits();
 
-                expect(mapBounds.minX).to.be.equal(-2);
-                expect(mapBounds.minY).to.be.equal(-3);
-                expect(mapBounds.maxX).to.be.equal(1);
-                expect(mapBounds.maxY).to.be.equal(1);
+                expect(quadrantLimits.q1).to.be.deep.equal({ x: 1, y: 1 });
+                expect(quadrantLimits.q2).to.be.deep.equal({ x: -2, y: 1 });
+                expect(quadrantLimits.q3).to.be.deep.equal({ x: -2, y: -3 });
+                expect(quadrantLimits.q4).to.be.deep.equal({ x: 1, y: -2 });
             });
 
             it('should expand to the left side', function () {
-                var mapBounds;
+                var quadrantLimits;
 
-                victim.expandMap(-3, -2, 1, 1);
-                mapBounds = victim.getWrappedBounds();
+                victim.expandToPosition(-3, -1);
+                quadrantLimits = victim.getQuadrantLimits();
 
-                expect(mapBounds.minX).to.be.equal(-3);
-                expect(mapBounds.minY).to.be.equal(-2);
-                expect(mapBounds.maxX).to.be.equal(1);
-                expect(mapBounds.maxY).to.be.equal(1);
+                expect(quadrantLimits.q1).to.be.deep.equal({ x: 1, y: 1 });
+                expect(quadrantLimits.q2).to.be.deep.equal({ x: -2, y: 1 });
+                expect(quadrantLimits.q3).to.be.deep.equal({ x: -3, y: -2 });
+                expect(quadrantLimits.q4).to.be.deep.equal({ x: 1, y: -2 });
             });
 
             it('should expand both left and downwards', function () {
-                var mapBounds;
+                var quadrantLimits;
 
-                victim.expandMap(-7, -5, 1, 1);
-                mapBounds = victim.getWrappedBounds();
+                victim.expandToPosition(-7, -5);
+                quadrantLimits = victim.getQuadrantLimits();
 
-                expect(mapBounds.minX).to.be.equal(-7);
-                expect(mapBounds.minY).to.be.equal(-5);
-                expect(mapBounds.maxX).to.be.equal(1);
-                expect(mapBounds.maxY).to.be.equal(1);
+                expect(quadrantLimits.q1).to.be.deep.equal({ x: 1, y: 1 });
+                expect(quadrantLimits.q2).to.be.deep.equal({ x: -2, y: 1 });
+                expect(quadrantLimits.q3).to.be.deep.equal({ x: -7, y: -5 });
+                expect(quadrantLimits.q4).to.be.deep.equal({ x: 1, y: -2 });
             });
         });
 
@@ -229,39 +232,39 @@ describe('map-manager.js', function () {
             });
 
             it('should expand downwards', function () {
-                var mapBounds;
+                var quadrantLimits;
 
-                victim.expandMap(-2, -3, 1, 1);
-                mapBounds = victim.getWrappedBounds(); // TODO: shouldn't test against wrapped bounds but quadrant limits.
+                victim.expandToPosition(0, -3);
+                quadrantLimits = victim.getQuadrantLimits();
 
-                expect(mapBounds.minX).to.be.equal(-2);
-                expect(mapBounds.minY).to.be.equal(-3);
-                expect(mapBounds.maxX).to.be.equal(1);
-                expect(mapBounds.maxY).to.be.equal(1);
+                expect(quadrantLimits.q1).to.be.deep.equal({ x: 1, y: 1 });
+                expect(quadrantLimits.q2).to.be.deep.equal({ x: -2, y: 1 });
+                expect(quadrantLimits.q3).to.be.deep.equal({ x: -2, y: -2 });
+                expect(quadrantLimits.q4).to.be.deep.equal({ x: 1, y: -3 });
             });
 
             it('should expand to the right side', function () {
-                var mapBounds;
+                var quadrantLimits;
 
-                victim.expandMap(-2, -2, 2, 1);
-                mapBounds = victim.getWrappedBounds();
+                victim.expandToPosition(2, -1);
+                quadrantLimits = victim.getQuadrantLimits();
 
-                expect(mapBounds.minX).to.be.equal(-2);
-                expect(mapBounds.minY).to.be.equal(-2);
-                expect(mapBounds.maxX).to.be.equal(2);
-                expect(mapBounds.maxY).to.be.equal(1);
+                expect(quadrantLimits.q1).to.be.deep.equal({ x: 1, y: 1 });
+                expect(quadrantLimits.q2).to.be.deep.equal({ x: -2, y: 1 });
+                expect(quadrantLimits.q3).to.be.deep.equal({ x: -2, y: -2 });
+                expect(quadrantLimits.q4).to.be.deep.equal({ x: 2, y: -2 });
             });
 
             it('should expand both right and downwards', function () {
-                var mapBounds;
+                var quadrantLimits;
 
-                victim.expandMap(-2, -6, 4, 1);
-                mapBounds = victim.getWrappedBounds();
+                victim.expandToPosition(4, -6);
+                quadrantLimits = victim.getQuadrantLimits();
 
-                expect(mapBounds.minX).to.be.equal(-2);
-                expect(mapBounds.minY).to.be.equal(-6);
-                expect(mapBounds.maxX).to.be.equal(4);
-                expect(mapBounds.maxY).to.be.equal(1);
+                expect(quadrantLimits.q1).to.be.deep.equal({ x: 1, y: 1 });
+                expect(quadrantLimits.q2).to.be.deep.equal({ x: -2, y: 1 });
+                expect(quadrantLimits.q3).to.be.deep.equal({ x: -2, y: -2 });
+                expect(quadrantLimits.q4).to.be.deep.equal({ x: 4, y: -6 });
             });
         });
 
