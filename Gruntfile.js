@@ -5,10 +5,18 @@ module.exports = function (grunt) {
         pkg: grunt.file.readJSON('package.json'),
 
         eslint: {
-            options: {
-                configFile: 'conf/eslint.json',
+            src: {
+                options: {
+                    configFile: 'conf/eslint/src.json',
+                },
+                src: ['src/**/*.js', 'examples/**/*.js']
             },
-            target: ['src/**/*.js', 'examples/**/*.js', 'test/**/*.js']
+            test: {
+                options: {
+                    configFile: 'conf/eslint/test.json',
+                },
+                src: ['test/**/*.js']
+            }
         },
 
         mocha_istanbul: {

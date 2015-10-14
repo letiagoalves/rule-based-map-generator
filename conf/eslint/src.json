@@ -1,7 +1,6 @@
 {
     "env": {
-        "node": true,
-        "mocha": true
+        "node": true
     },
     "rules": {
         "strict": [2, "global"],

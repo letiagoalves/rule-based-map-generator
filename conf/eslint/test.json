@@ -1,0 +1,14 @@
+{
+    "env": {
+        "node": true,
+        "mocha": true
+    },
+    "rules": {
+        "strict": [2, "global"],
+        "quotes": [2, "single"],
+        "indent": [2, 4],
+        "vars-on-top": 2,
+        "no-warning-comments": [1, { "terms": ["todo", "fixme"], "location": "anywhere" }],
+        "no-unused-expressions": 0
+    }
+}
