@@ -3,12 +3,14 @@
         "node": true,
         "mocha": true
     },
+    "plugins": ["mocha"],
     "rules": {
         "strict": [2, "global"],
         "quotes": [2, "single"],
-        "indent": [2, 4],
+        "indent": [2, 4, { "SwitchCase": 1 }],
         "vars-on-top": 2,
         "no-warning-comments": [1, { "terms": ["todo", "fixme"], "location": "anywhere" }],
-        "no-unused-expressions": 0
+        "no-unused-expressions": 0,
+        "mocha/no-exclusive-tests": 2
     }
 }
