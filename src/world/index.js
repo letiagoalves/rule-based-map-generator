@@ -43,13 +43,6 @@ function World(strategy, constraints, blocks) {
         return strategy.getMap();
     }
 
-    function invalidate() {
-        // TODO: implement invalidation feature
-        if (!started) {
-            throw new Error(CONSTANTS.errorMessages.worldNotStarted);
-        }
-    }
-
     function hasStarted() {
         return started;
     }
@@ -59,7 +52,6 @@ function World(strategy, constraints, blocks) {
     this.hasStarted = hasStarted;
     this.getPartialMap = getPartialMap;
     this.getMap = getMap;
-    this.invalidate = invalidate;
 }
 
 module.exports = World;
