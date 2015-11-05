@@ -101,4 +101,16 @@ describe('utils/index.js', function () {
         });
     });
 
+    describe('isInstanceOf', function () {
+        it('should return true when first argument is instance of second argument', function () {
+            var isInstanceOf = victim.isInstanceOf(new Number(3), Number);
+            expect(isInstanceOf).to.be.true;
+        });
+
+        it('should return false when first argument is instance of second argument', function () {
+            var isInstanceOf = victim.isInstanceOf(new String('some string'), Number);
+            expect(isInstanceOf).to.be.false;
+        });
+    });
+
 });

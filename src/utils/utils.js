@@ -34,14 +34,6 @@ function isInstanceOf(victim, constructor) {
     return victim instanceof constructor;
 }
 
-function writeJSONfile(outputFilename, obj) {
-    fs.writeFile(outputFilename, JSON.stringify(obj, null, 4), function (err) {
-        if (err) {
-            console.log(err);
-        }
-    });
-}
-
 function logTable(table) {
     var blockTemplate = '{block} ({x}, {y})';
     table = table.map(function (arr) {
@@ -66,26 +58,11 @@ function logTable(table) {
     betterConsole.table(table);
 }
 
-function saveMap (mapData) {
-    /*
-    var outputMap = mapData.map(function (arr) {
-        return arr.map(function (value) {
-            if (value && value.getId()) {
-                return value.getId();
-            }
-            return value;
-        });
-    });*/
-    writeJSONfile('map.json', mapData);
-}
-
 module.exports = {
     createMapUsingProperty: createMapUsingProperty,
     createMapUsingCallback: createMapUsingCallback,
     applyWhitelist: applyWhitelist,
     applyBlackList: applyBlackList,
     isInstanceOf: isInstanceOf,
-    writeJSONfile: writeJSONfile,
-    logTable: logTable,
-    saveMap: saveMap
+    logTable: logTable
 };
