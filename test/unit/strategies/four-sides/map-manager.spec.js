@@ -270,4 +270,42 @@ describe('map-manager.js', function () {
 
     });
 
+    describe('isInsideMapBounds', function () {
+        var initialSize = 4;
+
+        describe('with maximum size', function () {
+            var victim;
+            var maximumSize = { horizontal: 4, vertical: 8 };
+
+            beforeEach(function () {
+                victim = new MapManager(initialSize, maximumSize);
+            });
+
+            it('should return false when outside boundaries', function () {
+                // exceed horizontal
+                expect(victim.isInsideMapBounds(-3, -1, 0, 0)).to.be.false;
+                expect(victim.isInsideMapBounds(0, 0, 2, 1)).to.be.false;
+                // exceed vertical
+                expect(victim.isInsideMapBounds(-2, -5, 0, 0)).to.be.false;
+                expect(victim.isInsideMapBounds(0, 0, 1, 5)).to.be.false;
+            });
+
+            it('should return true when inside boundaries', function () {
+                expect(victim.isInsideMapBounds(-1, -1, 1, 1)).to.be.true;
+            });
+        });
+
+        describe('without maximum size', function () {
+            var victim;
+
+            it('should always return true', function () {
+                victim = new MapManager(initialSize);
+
+                expect(victim.isInsideMapBounds(-1, -1, 1, 1)).to.be.true;
+                expect(victim.isInsideMapBounds(-100, -100, 200, 200)).to.be.true;
+            });
+        });
+
+    });
+
 });

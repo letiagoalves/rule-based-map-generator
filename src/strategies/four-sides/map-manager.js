@@ -38,6 +38,7 @@ function MapManager(initialSize, maxMapSize) {
     }
 
     function buildMap(mapInitialSize) {
+        // TODO: review this adjust value for an odd bound
         var adjustValue = mapInitialSize % 2 === 0 ? 0 : 1;
         var q1AndQ2Height = Math.floor(mapInitialSize / 2) + adjustValue;
         var q3AndQ4Height = mapInitialSize - q1AndQ2Height;
@@ -56,16 +57,19 @@ function MapManager(initialSize, maxMapSize) {
         var horizontalAdjustValue = horizontal % 2 === 0 ? 0 : 1;
         var verticalAdjustValue = vertical % 2 === 0 ? 0 : 1;
 
-        var q1AndQ2Height = Math.floor(vertical / 2) + verticalAdjustValue;
-        var q3AndQ4Height = vertical - q1AndQ2Height;
-        var q1AndQ4Width = Math.floor(horizontal / 2) + horizontalAdjustValue;
-        var q2AndQ3Width = horizontal - q1AndQ4Width;
+        var horizontalHalf = Math.floor(horizontal / 2);
+        var verticalHalf = Math.floor(vertical / 2);
+
+        var minX = -horizontalHalf;
+        var maxX = horizontalHalf + horizontalAdjustValue - 1;
+        var minY = -verticalHalf;
+        var maxY = verticalHalf + verticalAdjustValue - 1;
 
         return {
-            minX: -q2AndQ3Width,
-            minY: -q3AndQ4Height,
-            maxX: q1AndQ4Width,
-            maxY: q1AndQ2Height
+            minX: minX,
+            minY: minY,
+            maxX: maxX,
+            maxY: maxY
         };
     }
 
