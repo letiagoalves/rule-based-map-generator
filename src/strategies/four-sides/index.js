@@ -59,7 +59,14 @@ function createInstance(randomMatrixGenerator) {
 
     function buildNeighbours(x, y) {
         function resolve(posX, posY) {
-            var block = instanceProps.mapManager.get(posX, posY);
+            var block;
+            var isInsideMapBounds = instanceProps.mapManager.isPositionInsideMapBounds(posX, posY);
+
+            if (!isInsideMapBounds) {
+                return null;
+            }
+
+            block = instanceProps.mapManager.get(posX, posY);
             return block instanceof Block ? block.getId() : null;
         }
 

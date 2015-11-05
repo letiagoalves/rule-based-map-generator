@@ -341,6 +341,7 @@ function MapManager(initialSize, maxMapSize) {
     this.getQuadrantLimits = getQuadrantLimits;
     this.getPartialMap = getPartialMap;
     this.getMap = getMap;
+    this.isPositionInsideMapBounds = isPositionInsideMapBounds;
     this.isInsideMapBounds = isInsideMapBounds;
     this.expandToPosition = expandToPosition;
     this.get = get;
