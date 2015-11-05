@@ -17,6 +17,3 @@ myUtils.logTable(map);
 map = worldInstance.getPartialMap(-3, -3, 1, 1);
 map = worldInstance.getMap();
 myUtils.logTable(map);
-
-// TMP
-myUtils.saveMap(map);

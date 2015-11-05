@@ -24,4 +24,3 @@ getAndLog(0, 0, 1, 1);
 // TMP
 map = worldInstance.getMap();
 myUtils.logTable(map);
-myUtils.saveMap(map);
