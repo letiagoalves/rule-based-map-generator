@@ -92,7 +92,7 @@ describe('world/index.js', function () {
                     getSidesTemplate: sinon.stub(),
                     init: sinon.stub(),
                     getAtPosition: sinon.stub(),
-                    getPartialMap: sinon.stub(),
+                    getPartialMap: sinon.stub().returns('strategy.getPartialMap response'),
                     getMap: sinon.stub().returns('strategy.getMap response')
                 });
                 world = new Victim(strategy, validWorldConstraints, setOfBlocks);
@@ -127,6 +127,40 @@ describe('world/index.js', function () {
             });
 
             describe('getPartialMap', function () {
+
+                describe('coordinates assertions', function () {
+                    it('should throw when invalid minX is passed', function () {
+                        expect(function () { world.getPartialMap(); }).to.throw('is required');
+                        expect(function () { world.getPartialMap({}); }).to.throw('must be a number');
+                    });
+                    it('should throw when invalid minY is passed', function () {
+                        expect(function () { world.getPartialMap(0); }).to.throw('is required');
+                        expect(function () { world.getPartialMap(0, {}); }).to.throw('must be a number');
+                    });
+                    it('should throw when invalid maxX is passed', function () {
+                        expect(function () { world.getPartialMap(0, 0); }).to.throw('is required');
+                        expect(function () { world.getPartialMap(0, 0, {}); }).to.throw('must be a number');
+                    });
+                    it('should throw when invalid maxY is passed', function () {
+                        expect(function () { world.getPartialMap(0, 0, 2); }).to.throw('is required');
+                        expect(function () { world.getPartialMap(0, 0, 2, {}); }).to.throw('must be a number');
+                    });
+                });
+
+                it('should throw an error when instance has not started', function () {
+                    expect(function () {
+                        world.getPartialMap(0, 0, 2, 2);
+                    }).to.throw('World instance not started');
+                });
+
+                it('should return the strategy.getPartialMap call result', function () {
+                    var partialMap;
+
+                    world.start();
+                    partialMap = world.getPartialMap(0, 0, 2, 2);
+                    expect(strategy.getPartialMap).to.have.been.called.once;
+                    expect(partialMap).to.be.equal('strategy.getPartialMap response');
+                });
 
             });
 
