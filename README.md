@@ -1,16 +1,25 @@
 # rule-based-map-generator
 ##### [node](http://nodejs.org) framework for real time generation of grid/tiled maps based on a previously defined set of constraints/rules
 
+___
+
 ## Philosophy
 
 This project goal is to provide an open framework to ease the generation of game worlds using predefined rules in a semi-automatic approach joining the benefits of procedural generation with manual art work creation.
 By other words, this framework generates structured maps in real time handling expansions when needed respecting game design rules in order to create additive game worlds.
+
+See a video demonstration here:
+[**https://youtu.be/-yyQ-vyKdYw**](https://youtu.be/-yyQ-vyKdYw)
+
+___
 
 ## Installation
 
 ```bash
 $ npm install rule-based-map-generator
 ```
+
+___
 
 ## Features
 
@@ -33,6 +42,8 @@ You can design your maps using different rules. They are:
 ### Strategies
 - square grid
 - hexagonal grid *(not yet implemented)*
+
+___
 
 ## Usage
 
@@ -124,15 +135,19 @@ Both result in a matrix representing the world. An example can be seen below:
 | **1** | `{ x: 0, y: 1, block: 'B1' }` | `{ x: 1, y: 1, block: 'B3' }` | `{ x: 2, y: 1, block: 'B3' }` |
 | **2** | `{ x: 0, y: 0, block: 'B1' }` | `{ x: 1, y: 0, block: 'B1' }` | `{ x: 2, y: 2, block: 'B2' }` |
 
-
+___
 
 ## API
 
 Soon.
 
+___
+
 ## Examples
 
 You can see examples [here](examples/).
+
+___
 
 ### Contribute
 There is still a lot to be done from adding new rules to adding new generation strategies. If you want to contribute, don't be shy and create a pull request.
