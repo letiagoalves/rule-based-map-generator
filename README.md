@@ -106,6 +106,20 @@ You can see examples of world configurations [here](examples/configurations/).
 
 ### World generation
 
+We can retrieve map using the following world methods:
+```js
+var minX = 0, minY = 0, maxX = 4, maxY = 4;
+var partialMap = world.getPartialMap(minX, minY, maxX, maxY);
+```
+
+```js
+var map = world.getMap();
+```
+
+Both result in a matrix representing the world. An example can be seen below:
+| `{ x: 0, y: 2, block: 'B1' }` | `{ x: 1, y: 2, block: 'B1' }` | `{ x: 2, y: 2, block: 'B3' }` |
+| `{ x: 0, y: 2, block: 'B1' }` | `{ x: 1, y: 2, block: 'B1' }` | `{ x: 2, y: 2, block: 'B3' }` |
+| `{ x: 0, y: 2, block: 'B1' }` | `{ x: 1, y: 2, block: 'B1' }` | `{ x: 2, y: 2, block: 'B3' }` |
 
 ## API
 
@@ -116,6 +130,7 @@ createConnectorInstance
 createWorldConstraints
 createWorldInstance
 ```
+
 ## Examples
 
 You can see examples [here](examples/).
