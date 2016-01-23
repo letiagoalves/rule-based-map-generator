@@ -128,17 +128,11 @@ Both result in a matrix representing the world. An example can be seen below:
 
 ## API
 
-```javascript
-createStrategy
-createBlockFactory
-createConnectorInstance
-createWorldConstraints
-createWorldInstance
-```
+Soon.
 
 ## Examples
 
 You can see examples [here](examples/).
 
 ### Contribute
-This project is being developed in an academic context so contributions are temporarily not allowed.
+There is still a lot to be done from adding new rules to adding new generation strategies. If you want to contribute, don't be shy and create a pull request.
