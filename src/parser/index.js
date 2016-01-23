@@ -31,11 +31,7 @@ function parse(config) {
 
     // assertions
     config = validator.assert(config, schema.config, 'config');
-
-    strategyFactory = api.getStrategyFactory(config.strategy);
-    randomMatrixGenerator = randomMatrix(config.seed);
-    strategyImplementation = strategyFactory.createInstance(randomMatrixGenerator);
-    strategy = new Strategy(strategyImplementation);
+    strategy = api.createStrategy(config.strategy, config.seed);
 
     // create block
     blockFactory = api.createBlockFactory(strategy);
