@@ -1,5 +1,6 @@
 'use strict';
 
+var randomMatrix = require('random-matrix');
 var Block = require('./../block');
 var Connector = require('./../connector');
 var World = require('./../world');
@@ -56,9 +57,22 @@ function createWorldInstance(strategy, constraints, blocks) {
     return new World(strategy, constraints, blocks);
 }
 
+function createStrategy(strategyName, seed) {
+    // TODO: validate arguments
+    var strategyFactory = getStrategyFactory(strategyName);
+    var randomMatrixGenerator = randomMatrix(seed);
+    var strategyInstance = strategyFactory.createInstance(randomMatrixGenerator);
+    return new Strategy(strategyInstance);
+}
+
+function createWorldConstraints(initialMapSize, bounds, mapCenter) {
+    return new WorldConstraints(initialMapSize, bounds, mapCenter);
+}
+
 module.exports = {
-    getStrategyFactory: getStrategyFactory,
+    createStrategy: createStrategy,
     createBlockFactory: createBlockFactory,
     createConnectorInstance: createConnectorInstance,
-    createWorldInstance: createWorldInstance
+    createWorldInstance: createWorldInstance,
+    createWorldConstraints: createWorldConstraints
 };

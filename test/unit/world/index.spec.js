@@ -15,7 +15,6 @@ describe('world/index.js', function () {
     var consoleErrorStub;
 
     var noop = function () {};
-    var validId = 'someId';
     var validStrategy = new Strategy({
         getSidesTemplate: function () {
             return ['UP', 'RIGHT', 'BOTTOM', 'LEFT'];

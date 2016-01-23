@@ -84,6 +84,43 @@ function selectBlock(neighbours, blocksMap, mapStatus, position, getPartialMapFn
     return null;
 }
 
+/*
+function selectBlock2(neighbours, blocksMap, mapStatus, position, getPartialMapFn, mapBounds, randomValue) {
+    // TODO: assert arguments
+    // randomValue between 0 and 1
+    var candidates = Object.keys(blocksMap);
+    var stackOfRules = [
+        useBlackAndWhiteListsRule
+        useMaxOccupationRule
+        useMaxOccupationPercentageRule
+        useMinimumDistanceRule
+    ];
+    var randomItemPosition;
+
+    console.info('START: Applying rules');
+    stackOfRules.some(function applyAgainstCandidates(rule) {
+        candidates = rule(candidates, neighbours, blocksMap, mapStatus, position, getPartialMapFn, mapBounds, randomValue);
+        // bail when there is no candidates to avoid unnecessary work
+        return candidates.length === 0;
+    });
+    console.info('END: Applying rules');
+
+    if (candidates.length === 1) {
+        return candidates[0];
+    }
+
+    if (candidates.length > 1) {
+        randomItemPosition = Math.floor(randomValue * candidates.length);
+        // because if randomValue === 1, array position will be outside bounds
+        randomItemPosition = Math.min(randomItemPosition, candidates.length - 1);
+        return candidates[randomItemPosition];
+    }
+
+    // there is no candidates
+    return null;
+}
+*/
+
 module.exports = {
     selectBlock: selectBlock
 };

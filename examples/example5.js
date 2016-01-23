@@ -1,15 +1,10 @@
 'use strict';
 
 var chalk = require('chalk');
-var randomMatrix = require('random-matrix');
-
 var api = require('./../src/api');
-var Strategy = require('./../src/strategies/strategy.js');
 var myUtils = require('./../src/utils/utils.js');
-var WorldConstraints = require('./../src/world-constraints');
 
-var seed, randomMatrixGenerator;
-var strategyFactory, strategyInstance, strategy;
+var strategy;
 var blockFactory;
 var block1, block2, block3;
 var connector1;
@@ -18,11 +13,7 @@ var worldConstraints, world;
 console.log(chalk.bgBlue('Running Example 5'));
 
 // create strategy
-strategyFactory = api.getStrategyFactory('squareGrid');
-seed = 1337;
-randomMatrixGenerator = randomMatrix(seed);
-strategyInstance = strategyFactory.createInstance(randomMatrixGenerator);
-strategy = new Strategy(strategyInstance);
+strategy = api.createStrategy('squareGrid', 1337);
 
 // Create blocks
 blockFactory = api.createBlockFactory(strategy);
@@ -41,7 +32,7 @@ connector1 = api.createConnectorInstance('C1', 'whitelist', ['B1', 'B2', 'B3']);
 });
 
 // create world
-worldConstraints = new WorldConstraints(4);
+worldConstraints = api.createWorldConstraints(4);
 world = api.createWorldInstance(strategy, worldConstraints, [block1, block2, block3]);
 
 console.log(chalk.bgBlue('World start'));

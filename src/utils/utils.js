@@ -1,6 +1,5 @@
 'use strict';
 
-var fs = require('fs');
 var betterConsole = require('better-console');
 var arrayDifference = require('mout/array/difference');
 var arrayIntersection = require('mout/array/intersection');
