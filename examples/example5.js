@@ -1,7 +1,7 @@
 'use strict';
 
 var chalk = require('chalk');
-var api = require('./../src/api');
+var api = require('./../src');
 var myUtils = require('./../src/utils/utils.js');
 
 var strategy;
