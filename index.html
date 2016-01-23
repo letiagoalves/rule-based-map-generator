@@ -32,32 +32,41 @@
 
         <section id="main_content">
           <h1>
-<a id="rule-based-map-generator" class="anchor" href="#rule-based-map-generator" aria-hidden="true"><span class="octicon octicon-link"></span></a>rule-based-map-generator</h1>
+<a id="rule-based-map-generator" class="anchor" href="#rule-based-map-generator" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>rule-based-map-generator</h1>
 
 <h5>
-<a id="node-framework-for-real-time-generation-of-gridtiled-maps-based-on-a-previously-defined-set-of-constraintsrules" class="anchor" href="#node-framework-for-real-time-generation-of-gridtiled-maps-based-on-a-previously-defined-set-of-constraintsrules" aria-hidden="true"><span class="octicon octicon-link"></span></a><a href="http://nodejs.org">node</a> framework for real time generation of grid/tiled maps based on a previously defined set of constraints/rules</h5>
+<a id="node-framework-for-real-time-generation-of-gridtiled-maps-based-on-a-previously-defined-set-of-constraintsrules" class="anchor" href="#node-framework-for-real-time-generation-of-gridtiled-maps-based-on-a-previously-defined-set-of-constraintsrules" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a href="http://nodejs.org">node</a> framework for real time generation of grid/tiled maps based on a previously defined set of constraints/rules</h5>
+
+<hr>
 
 <h2>
-<a id="philosophy" class="anchor" href="#philosophy" aria-hidden="true"><span class="octicon octicon-link"></span></a>Philosophy</h2>
+<a id="philosophy" class="anchor" href="#philosophy" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Philosophy</h2>
 
 <p>This project goal is to provide an open framework to ease the generation of game worlds using predefined rules in a semi-automatic approach joining the benefits of procedural generation with manual art work creation.
 By other words, this framework generates structured maps in real time handling expansions when needed respecting game design rules in order to create additive game worlds.</p>
 
+<p>See a video demonstration here:
+<a href="https://youtu.be/-yyQ-vyKdYw"><strong>https://youtu.be/-yyQ-vyKdYw</strong></a></p>
+
+<hr>
+
 <h2>
-<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h2>
 
 <div class="highlight highlight-source-shell"><pre>$ npm install rule-based-map-generator</pre></div>
 
+<hr>
+
 <h2>
-<a id="features" class="anchor" href="#features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Features</h2>
+<a id="features" class="anchor" href="#features" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Features</h2>
 
 <h3>
-<a id="rules" class="anchor" href="#rules" aria-hidden="true"><span class="octicon octicon-link"></span></a>Rules</h3>
+<a id="rules" class="anchor" href="#rules" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Rules</h3>
 
 <p>You can design your maps using different rules. They are:</p>
 
 <h4>
-<a id="world-based" class="anchor" href="#world-based" aria-hidden="true"><span class="octicon octicon-link"></span></a>World based</h4>
+<a id="world-based" class="anchor" href="#world-based" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>World based</h4>
 
 <ul>
 <li>Initial map size (mandatory)</li>
@@ -68,7 +77,7 @@ By other words, this framework generates structured maps in real time handling e
 </ul>
 
 <h4>
-<a id="block-based" class="anchor" href="#block-based" aria-hidden="true"><span class="octicon octicon-link"></span></a>Block based</h4>
+<a id="block-based" class="anchor" href="#block-based" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Block based</h4>
 
 <ul>
 <li>Blacklist</li>
@@ -79,7 +88,7 @@ By other words, this framework generates structured maps in real time handling e
 </ul>
 
 <h3>
-<a id="strategies" class="anchor" href="#strategies" aria-hidden="true"><span class="octicon octicon-link"></span></a>Strategies</h3>
+<a id="strategies" class="anchor" href="#strategies" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Strategies</h3>
 
 <ul>
 <li>square grid</li>
@@ -87,55 +96,135 @@ By other words, this framework generates structured maps in real time handling e
 </li>
 </ul>
 
+<hr>
+
 <h2>
-<a id="examples" class="anchor" href="#examples" aria-hidden="true"><span class="octicon octicon-link"></span></a>Examples</h2>
-
-<p>The easiest way to create a world instance is to use the World configuration parser. This parser receives a literal object with the world definition. For example:</p>
-
-<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> ruleBasedMapGenerator <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>rule-based-map-generator<span class="pl-pds">'</span></span>);
-<span class="pl-k">var</span> worldParser <span class="pl-k">=</span> <span class="pl-smi">ruleBasedMapGenerator</span>.<span class="pl-smi">parser</span>;
-
-<span class="pl-k">var</span> world <span class="pl-k">=</span> <span class="pl-smi">worldParser</span>.<span class="pl-c1">parse</span>({
-    seed<span class="pl-k">:</span> <span class="pl-c1">1337</span>,
-    strategy<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>squareGrid<span class="pl-pds">'</span></span>,
-    initialMapSize<span class="pl-k">:</span> <span class="pl-c1">4</span>,
-    blocks<span class="pl-k">:</span> [{
-        id<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>b1<span class="pl-pds">'</span></span>,
-        connectors<span class="pl-k">:</span> {
-            UP<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>c2<span class="pl-pds">'</span></span>, RIGHT<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>c3<span class="pl-pds">'</span></span>, BOTTOM<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>c2<span class="pl-pds">'</span></span>, LEFT<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>c3<span class="pl-pds">'</span></span>
-        },
-        constraints<span class="pl-k">:</span> {}
-    }, {
-        id<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>b2<span class="pl-pds">'</span></span>,
-        connectors<span class="pl-k">:</span> {
-            UP<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>c1<span class="pl-pds">'</span></span>, RIGHT<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>c3<span class="pl-pds">'</span></span>, BOTTOM<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>c1<span class="pl-pds">'</span></span>, LEFT<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>c3<span class="pl-pds">'</span></span>
-        },
-        constraints<span class="pl-k">:</span> {}
-    }, {
-        id<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>b3<span class="pl-pds">'</span></span>,
-        connectors<span class="pl-k">:</span> {
-            UP<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>c4<span class="pl-pds">'</span></span>, RIGHT<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>c4<span class="pl-pds">'</span></span>, BOTTOM<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>c4<span class="pl-pds">'</span></span>, LEFT<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>c4<span class="pl-pds">'</span></span>
-        },
-        constraints<span class="pl-k">:</span> {}
-    }],
-    connectors<span class="pl-k">:</span> [
-        { id<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>c1<span class="pl-pds">'</span></span>, type<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>whitelist<span class="pl-pds">'</span></span>, blockIds<span class="pl-k">:</span> [<span class="pl-s"><span class="pl-pds">'</span>b1<span class="pl-pds">'</span></span>]},
-        { id<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>c2<span class="pl-pds">'</span></span>, type<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>whitelist<span class="pl-pds">'</span></span>, blockIds<span class="pl-k">:</span> [<span class="pl-s"><span class="pl-pds">'</span>b2<span class="pl-pds">'</span></span>]},
-        { id<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>c3<span class="pl-pds">'</span></span>, type<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>whitelist<span class="pl-pds">'</span></span>, blockIds<span class="pl-k">:</span> [<span class="pl-s"><span class="pl-pds">'</span>b3<span class="pl-pds">'</span></span>]},
-        { id<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>c4<span class="pl-pds">'</span></span>, type<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>whitelist<span class="pl-pds">'</span></span>, blockIds<span class="pl-k">:</span> [<span class="pl-s"><span class="pl-pds">'</span>b1<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>b2<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>b3<span class="pl-pds">'</span></span>]}]
-});</pre></div>
-
-<p>Or you can build the world manually:</p>
-
-
-
-<h6>
-<a id="todo-create-example-documentation" class="anchor" href="#todo-create-example-documentation" aria-hidden="true"><span class="octicon octicon-link"></span></a>//TODO: Create example documentation</h6>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h2>
 
 <h3>
-<a id="contribute" class="anchor" href="#contribute" aria-hidden="true"><span class="octicon octicon-link"></span></a>Contribute</h3>
+<a id="world-creation" class="anchor" href="#world-creation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>World creation</h3>
 
-<p>This project is being developed in an academic context so contributions are temporarily not allowed.</p>
+<p>Below is a minimal example of how to configure and create a world.</p>
+
+<p>First require rule-based-map-generator module.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> ruleBasedMapGenerator <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>rule-based-map-generator<span class="pl-pds">'</span></span>);</pre></div>
+
+<p>Here we create a strategy of generation. In these case we will choose a strategy for square grid maps.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> strategyName <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>squareGrid<span class="pl-pds">'</span></span>;
+<span class="pl-k">var</span> worldSeed <span class="pl-k">=</span> <span class="pl-c1">1337</span>;
+<span class="pl-k">var</span> strategy <span class="pl-k">=</span> <span class="pl-smi">ruleBasedMapGenerator</span>.<span class="pl-en">createStrategy</span>(strategyName, worldSeed);</pre></div>
+
+<p>In order to create blocks, we need to create a block factory for the previously created strategy. Then we create 3 blocks without constraints for the sake of simplicity.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> blockFactory <span class="pl-k">=</span> <span class="pl-smi">ruleBasedMapGenerator</span>.<span class="pl-en">createBlockFactory</span>(strategy);
+<span class="pl-k">var</span> block1 <span class="pl-k">=</span> <span class="pl-en">blockFactory</span>(<span class="pl-s"><span class="pl-pds">'</span>B1<span class="pl-pds">'</span></span>);
+<span class="pl-k">var</span> block2 <span class="pl-k">=</span> <span class="pl-en">blockFactory</span>(<span class="pl-s"><span class="pl-pds">'</span>B2<span class="pl-pds">'</span></span>);
+<span class="pl-k">var</span> block3 <span class="pl-k">=</span> <span class="pl-en">blockFactory</span>(<span class="pl-s"><span class="pl-pds">'</span>B3<span class="pl-pds">'</span></span>);</pre></div>
+
+<p>To define how blocks connect between each other in the world we need to create connectors.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> connector1 <span class="pl-k">=</span> <span class="pl-smi">ruleBasedMapGenerator</span>.<span class="pl-en">createConnectorInstance</span>(<span class="pl-s"><span class="pl-pds">'</span>C1<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>whitelist<span class="pl-pds">'</span></span>, [<span class="pl-s"><span class="pl-pds">'</span>B1<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>B2<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>B3<span class="pl-pds">'</span></span>]);
+<span class="pl-k">var</span> connector2 <span class="pl-k">=</span> <span class="pl-smi">ruleBasedMapGenerator</span>.<span class="pl-en">createConnectorInstance</span>(<span class="pl-s"><span class="pl-pds">'</span>C1<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>blacklist<span class="pl-pds">'</span></span>, [<span class="pl-s"><span class="pl-pds">'</span>B2<span class="pl-pds">'</span></span>]);</pre></div>
+
+<p>Now we can attach the connector to the desired blocks sides.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">block1</span>.<span class="pl-en">setSideConnector</span>(<span class="pl-s"><span class="pl-pds">'</span>LEFT<span class="pl-pds">'</span></span>, connector1);
+<span class="pl-smi">block1</span>.<span class="pl-en">setSideConnector</span>(<span class="pl-s"><span class="pl-pds">'</span>RIGHT<span class="pl-pds">'</span></span>, connector1);
+<span class="pl-smi">block1</span>.<span class="pl-en">setSideConnector</span>(<span class="pl-s"><span class="pl-pds">'</span>UP<span class="pl-pds">'</span></span>, connector2);
+<span class="pl-smi">block1</span>.<span class="pl-en">setSideConnector</span>(<span class="pl-s"><span class="pl-pds">'</span>BOTTOM<span class="pl-pds">'</span></span>, connector2);
+
+<span class="pl-smi">block2</span>.<span class="pl-en">setSideConnector</span>(<span class="pl-s"><span class="pl-pds">'</span>LEFT<span class="pl-pds">'</span></span>, connector1);
+<span class="pl-smi">block2</span>.<span class="pl-en">setSideConnector</span>(<span class="pl-s"><span class="pl-pds">'</span>RIGHT<span class="pl-pds">'</span></span>, connector1);
+<span class="pl-c">// and so on...</span></pre></div>
+
+<p>Before creating the world instance we need to create the world constraints.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> initialMapSize <span class="pl-k">=</span> <span class="pl-c1">4</span>;
+<span class="pl-k">var</span> bounds <span class="pl-k">=</span> { horizontal<span class="pl-k">:</span> <span class="pl-c1">10</span>, vertical<span class="pl-k">:</span> <span class="pl-c1">10</span> };
+<span class="pl-k">var</span> mapCenter <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>B2<span class="pl-pds">'</span></span>;
+<span class="pl-k">var</span> worldConstraints <span class="pl-k">=</span> <span class="pl-smi">ruleBasedMapGenerator</span>.<span class="pl-en">createWorldConstraints</span>(initialMapSize, bounds, mapCenter);</pre></div>
+
+<p>Now we are ready to create our world.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> world <span class="pl-k">=</span> <span class="pl-smi">ruleBasedMapGenerator</span>.<span class="pl-en">createWorldInstance</span>(
+    strategy,
+    worldConstraints,
+    [block1, block2, block3] <span class="pl-c">// set of blocks</span>
+);</pre></div>
+
+<p><strong>But wait! There is more.</strong> Instead of setting up the world using all these API methods you can take advantage of the <strong>World Parser</strong> to create a world based on a single configuration.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> worldParser <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>rule-based-map-generator<span class="pl-pds">'</span></span>).<span class="pl-smi">parser</span>;
+<span class="pl-k">var</span> configuration <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>./path/to/world/configuration.json<span class="pl-pds">'</span></span>);
+<span class="pl-k">var</span> world <span class="pl-k">=</span> <span class="pl-smi">worldParser</span>.<span class="pl-c1">parse</span>(configuration);</pre></div>
+
+<p>You can see examples of world configurations <a href="examples/configurations/">here</a>.</p>
+
+<h3>
+<a id="world-generation" class="anchor" href="#world-generation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>World generation</h3>
+
+<p>We can retrieve map using the following world methods:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> minX <span class="pl-k">=</span> <span class="pl-c1">0</span>, minY <span class="pl-k">=</span> <span class="pl-c1">0</span>, maxX <span class="pl-k">=</span> <span class="pl-c1">4</span>, maxY <span class="pl-k">=</span> <span class="pl-c1">4</span>;
+<span class="pl-k">var</span> partialMap <span class="pl-k">=</span> <span class="pl-smi">world</span>.<span class="pl-en">getPartialMap</span>(minX, minY, maxX, maxY);</pre></div>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> map <span class="pl-k">=</span> <span class="pl-smi">world</span>.<span class="pl-en">getMap</span>();</pre></div>
+
+<p>Both result in a matrix representing the world. An example can be seen below:</p>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>0</strong></td>
+<td><code>{ x: 0, y: 2, block: 'B2' }</code></td>
+<td><code>{ x: 1, y: 2, block: 'B1' }</code></td>
+<td><code>{ x: 2, y: 2, block: 'B3' }</code></td>
+</tr>
+<tr>
+<td><strong>1</strong></td>
+<td><code>{ x: 0, y: 1, block: 'B1' }</code></td>
+<td><code>{ x: 1, y: 1, block: 'B3' }</code></td>
+<td><code>{ x: 2, y: 1, block: 'B3' }</code></td>
+</tr>
+<tr>
+<td><strong>2</strong></td>
+<td><code>{ x: 0, y: 0, block: 'B1' }</code></td>
+<td><code>{ x: 1, y: 0, block: 'B1' }</code></td>
+<td><code>{ x: 2, y: 2, block: 'B2' }</code></td>
+</tr>
+</tbody>
+</table>
+
+<hr>
+
+<h2>
+<a id="api" class="anchor" href="#api" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>API</h2>
+
+<p>Soon.</p>
+
+<hr>
+
+<h2>
+<a id="examples" class="anchor" href="#examples" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Examples</h2>
+
+<p>You can see examples <a href="examples/">here</a>.</p>
+
+<hr>
+
+<h3>
+<a id="contribute" class="anchor" href="#contribute" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Contribute</h3>
+
+<p>There is still a lot to be done from adding new rules to adding new generation strategies. If you want to contribute, don't be shy and create a pull request.</p>
         </section>
 
         <footer>
