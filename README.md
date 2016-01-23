@@ -117,9 +117,14 @@ var map = world.getMap();
 ```
 
 Both result in a matrix representing the world. An example can be seen below:
-| `{ x: 0, y: 2, block: 'B1' }` | `{ x: 1, y: 2, block: 'B1' }` | `{ x: 2, y: 2, block: 'B3' }` |
-| `{ x: 0, y: 2, block: 'B1' }` | `{ x: 1, y: 2, block: 'B1' }` | `{ x: 2, y: 2, block: 'B3' }` |
-| `{ x: 0, y: 2, block: 'B1' }` | `{ x: 1, y: 2, block: 'B1' }` | `{ x: 2, y: 2, block: 'B3' }` |
+
+|       | 0   | 1   | 2   |
+| ---   | --- | --- | --- |
+| **0** | `{ x: 0, y: 2, block: 'B2' }` | `{ x: 1, y: 2, block: 'B1' }` | `{ x: 2, y: 2, block: 'B3' }` |
+| **1** | `{ x: 0, y: 1, block: 'B1' }` | `{ x: 1, y: 1, block: 'B3' }` | `{ x: 2, y: 1, block: 'B3' }` |
+| **2** | `{ x: 0, y: 0, block: 'B1' }` | `{ x: 1, y: 0, block: 'B1' }` | `{ x: 2, y: 2, block: 'B2' }` |
+
+
 
 ## API
 
