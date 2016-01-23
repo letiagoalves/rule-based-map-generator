@@ -1,6 +1,6 @@
 {
   "name": "rule-based-map-generator",
-  "version": "0.0.0",
+  "version": "0.0.2",
   "description": "Rule based map generator",
   "main": "src/index.js",
   "scripts": {
@@ -30,7 +30,6 @@
   },
   "homepage": "https://github.com/letiagoalves/rule-based-map-generator",
   "devDependencies": {
-    "better-console": "^0.2.4",
     "chai": "^3.0.0",
     "eslint": "^1.7.0",
     "eslint-plugin-mocha": "^1.0.0",
@@ -44,6 +43,7 @@
     "sinon-chai": "^2.8.0"
   },
   "dependencies": {
+    "better-console": "^0.2.4",
     "chalk": "^1.0.0",
     "functional-matrix": "^0.1.0",
     "joi": "^6.4.1",
