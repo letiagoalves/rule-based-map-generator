@@ -101,6 +101,8 @@ function createInstance(randomMatrixGenerator) {
 
         if (blockId !== null) {
             instanceProps.mapStatus.addBlock(blockId);
+        } else {
+            instanceProps.mapStatus.addVoid();
         }
     }
 

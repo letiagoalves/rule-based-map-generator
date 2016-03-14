@@ -9,6 +9,7 @@ function sum(a, b) {
 
 function MapStatus() {
     var blocksCount = {};
+    var voidCount = 0;
 
     function addBlock(blockId) {
         if (!isString(blockId) || blockId.length === 0) {
@@ -19,16 +20,24 @@ function MapStatus() {
         blocksCount[blockId]++;
     }
 
+    function addVoid() {
+        voidCount++;
+    }
+
     function removeBlock(blockId) {
         if (!blocksCount.hasOwnProperty(blockId)) {
             throw new Error('Cannot remove unexisting block');
         }
 
-        blocksCount[blockId]--;
+        blocksCount[blockId] = Math.max(0, blocksCount[blockId] - 1);
+    }
+
+    function removeVoid() {
+        voidCount = Math.max(0, voidCount - 1);
     }
 
     function getNumberOfTotalBlocks() {
-        return objectReduce(blocksCount, sum, 0);
+        return objectReduce(blocksCount, sum, 0) + voidCount;
     }
 
     function getBlockOccupation(blockId) {
@@ -45,6 +54,8 @@ function MapStatus() {
     // public
     this.addBlock = addBlock;
     this.removeBlock = removeBlock;
+    this.addVoid = addVoid;
+    this.removeVoid = removeVoid;
     this.getBlockOccupation = getBlockOccupation;
     this.getBlockOccupationPercentage = getBlockOccupationPercentage;
     this.getNumberOfTotalBlocks = getNumberOfTotalBlocks;

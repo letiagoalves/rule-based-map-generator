@@ -3,13 +3,11 @@
 var forOwn = require('mout/object/forOwn');
 var objectMap = require('mout/object/map');
 var isString = require('mout/lang/isString');
-var randomMatrix = require('random-matrix');
 
 var validator = require('./../validator');
 var schema = require('./schema.js');
 var api = require('./../api');
 var utils = require('./../utils/utils.js');
-var Strategy = require('./../strategies/strategy.js');
 var WorldConstraints = require('./../world-constraints');
 
 /**
@@ -23,10 +21,7 @@ function parse(config) {
     var blocksMap;
     var connectors;
     var connectorsMap;
-    var strategyFactory;
-    var strategyImplementation;
     var strategy;
-    var randomMatrixGenerator;
     var worldConstraints;
 
     // assertions
